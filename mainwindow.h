@@ -24,9 +24,14 @@ public:
 
 protected:
     void mousePressEvent(QMouseEvent *e);
+    //void wheelEvent(QWheelEvent *e);
 
 private slots:
     void on_actionOPEN_triggered();
+
+
+    void on_actionQUIT_triggered();
+
 
 private:
 

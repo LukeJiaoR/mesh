@@ -5,6 +5,8 @@
 
 
 #include "objloader.h"
+#include "loadforobj.h"
+#include "loadfilefor.h"
 
 
 
@@ -18,7 +20,7 @@ public:
 
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
-    void NewMesh();
+    int* NewMesh(QString fileName);
 
 
 
@@ -27,10 +29,13 @@ public slots:
     void setYRotation(int angle);
     void setZRotation(int angle);
 
+
+
 signals:
     void xRotationChanged(int angle);
     void yRotationChanged(int angle);
     void zRotationChanged(int angle);
+
 
 
 protected:
@@ -39,14 +44,21 @@ protected:
     void resizeGL(int width, int height);
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
+    void wheelEvent(QWheelEvent *event );
+
+    void scalingtheMesh(float x);
+
 
 
 
 private:
-    sp::ObjLoader *FileOpen;
+   // sp::ObjLoader *FileOpen;
+   // loadforobj *FileOpen;
+    LoadFileFOr *FileOpen;
     int xRot;
     int yRot;
     int zRot;
+    float scaling;
     QPoint lastPos;
 
 

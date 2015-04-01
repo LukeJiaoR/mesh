@@ -14,12 +14,16 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
            glwidget.cpp \
-           objloader.cpp \
-           mainwindow.cpp
+           mainwindow.cpp \
+    loadforobj.cpp \
+    objloader.cpp \
+    loadfilefor.cpp
 
 HEADERS  +=  mainwindow.h \
-             objloader.h \
-             glwidget.h
+             glwidget.h \
+    loadforobj.h \
+    objloader.h \
+    loadfilefor.h
 
 
 FORMS    +=  mainwindow.ui

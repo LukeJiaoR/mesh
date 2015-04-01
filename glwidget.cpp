@@ -11,6 +11,7 @@ GLWidget::GLWidget(QWidget *parent)
     xRot = 0;
     yRot = 0;
     zRot = 0;
+    scaling = 1.0;
     //qtPurple = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0);
 }
 GLWidget::~GLWidget()
@@ -68,24 +69,42 @@ void GLWidget::setZRotation(int angle)
     }
 }
 
+void GLWidget::scalingtheMesh(float x)
+{
+    std::cout<< "after"<< x << std::endl;
+
+    scaling += x/2.0;
+    updateGL();
+}
 void GLWidget::initializeGL()
 {
 
-    glClearColor(1.0,1.0,1.0,1.0);
-    FileOpen = new sp::ObjLoader();
+    glClearColor(1.0,1.0,1.0,0.0);
+    glClearDepth(1.0f);
+    // FileOpen = new sp::ObjLoader();
     //FileOpen->load("F:\\model\\CUBE.obj");
+    //FileOpen = new loadforobj();
+    FileOpen = new LoadFileFOr();
 
 
 
-
+    glEnable(GL_BLEND);	                             //混色
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_MULTISAMPLE);
-    static GLfloat lightPosition[4] = { 0.5, 5.0, 7.0, 1.0 };
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    glEnable(GL_LIGHT1);
+    //glEnable(GL_MULTISAMPLE);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);         // 真正精细的透视修正
+    //static GLfloat lightPosition[4] = { 9.0, 9.0, 7.0, 1.0 };
+    //glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    GLfloat LightPosition[]= { 0.0f, 0.0f, 10.0f, 1.0f };
+
+    GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };          // 环境光参数
+    GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };          // 漫射光参数
+    glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
+    glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);
 }
 
 void GLWidget::paintGL()
@@ -93,7 +112,7 @@ void GLWidget::paintGL()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    glTranslatef(0.0, 0.0, 0.0);
+
     /*
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -110,16 +129,40 @@ void GLWidget::paintGL()
     //glClear(GL_COLOR_BUFFER_BIT);
    // glColor3f(1.0,1.0,1.0);
    // glOrtho(0.0,1.0,0.0,1.0,-1.0,1.0);
+    int facesize;
+    facesize = FileOpen->sizeOfFaces();
 
-    glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
+     glTranslatef(0.0, 0.0, 0.0);           //平移
+    glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);  //旋转
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
+    glScalef(scaling,scaling,scaling);      //放大缩小
+    //glScalef(0.5,0.5,0.5);
+    glColor3f(1.0f,0.0f,0.0f);
+
+    for(int p =0;p < facesize;p++){
 
 
 
-    //FileOpen = new sp::ObjLoader();
-    //FileOpen->load("F:\\model\\obj.obj");
-    FileOpen->draw();
+        glBegin(GL_POLYGON);
+        /* int vertsNumOfFace = Faces[p][0];
+        for(int u  = 1; u<=vertsNumOfFace; u++){
+
+            int k =Faces[p][u];
+
+             glVertex3f(Verts[k][0],Verts[k][1],Verts[k][2]);
+             //if(Verts[k][0]==0)
+             //    std::cout<< k << endl;
+
+        }*/
+        FileOpen->draw(p);
+        glEnd();
+
+    }
+
+
+
+
 
 
 
@@ -133,25 +176,29 @@ void GLWidget::resizeGL(int width, int height)
     int side = qMin(width, height);
     glViewport((width - side) / 2, (height - side) / 2, side, side);
 
-    glViewport(0, 0, (GLint)width, (GLint)height);
+    //glViewport(0, 0, (GLint)width, (GLint)height);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    glOrtho(-50.0, +50.0, -50.0, +50.0, -50.0, 50.0);//设置显示三围裁切空间
+    glOrtho(-2.00, +2.00, -2.00, +2.00, -2.01, 2.01);//设置显示三围裁切空间
 
     glMatrixMode(GL_MODELVIEW);
 }
 
-void GLWidget::NewMesh()
+int* GLWidget::NewMesh(QString fileName)
 {
+    /*
     QString fileName = QFileDialog::getOpenFileName(
                                                     this,
                                                     tr("Open File"),
                                                     QString(),
                                                     tr("Mesh Files (*.obj *.ply);;ALL(*);;C++ Files (*.cpp *.h)")
                                                     );
-    FileOpen = new sp::ObjLoader();
+    */
+    //FileOpen = new sp::ObjLoader();
+   // FileOpen = new loadforobj();
+      FileOpen = new LoadFileFOr();
 
 
    // QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));
@@ -159,13 +206,18 @@ void GLWidget::NewMesh()
    if (!fileName.isEmpty())
     {
     //将QString 转为 char 路径不能有中文
-    char* file;
-    QByteArray ba = fileName.toLatin1();
-    file=ba.data();
-    FileOpen->load(file);
+    //char* file;
+    //QByteArray ba = fileName.toLatin1();
+    //file=ba.data();
+    FileOpen->Load(fileName);
     updateGL();
-
    }
+   int *size;
+   size = new int [2];
+   size[0]=FileOpen->sizeOfVerts();
+   std::cout<< FileOpen->sizeOfVerts()<<std::endl;
+   size[1]=FileOpen->sizeOfFaces();
+   return size;
 }
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
@@ -187,4 +239,23 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
         setZRotation(zRot + 8 * dx);
     }
     lastPos = event->pos();
+}
+void GLWidget::wheelEvent(QWheelEvent *event){
+
+   // QPoint numPixels = event->pixelDelta();
+    QPoint numDegrees = event->angleDelta() / 8;
+
+        /*if (!numPixels.isNull()) {
+            std::cout << numPixels.rx()<<numPixels.ry()<<std::endl;
+        } else */if (!numDegrees.isNull()) {
+            QPoint numSteps = numDegrees / 15;
+             scalingtheMesh(numSteps.ry());
+
+        }
+
+
+        event->accept();
+
+    //if(event->buttons() & Qt::UpArrow)
+        //std::cout << "upArrow"<<std::endl;
 }
