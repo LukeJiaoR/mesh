@@ -123,10 +123,9 @@ std::cout << facesize << j <<endl;
 }
 void loadforobj::draw() const
 {
-
     for(int p =0;p < facesize;p++){
 
-        glColor3f(0.5f,0.5f,0.5f);
+        glColor3f(0.1f,0.1f,0.1f);
         glBegin(GL_TRIANGLES);
 
 

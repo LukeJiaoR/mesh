@@ -13,23 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
-/*
-    glWidget = new GLWidget;
 
-    button = createButton();
-
-    //connect(button,
-    //        &QPushButton::clicked,
-     //       glWidget,
-     //       SLOT(NewMesh())
-      //      );
-
-
-    QHBoxLayout *mainLayout = new QHBoxLayout;
-    mainLayout->addWidget(glWidget);
-    mainLayout->addWidget(button);
-    setLayout(mainLayout);
-*/
 }
 
 MainWindow::~MainWindow()
@@ -47,15 +31,17 @@ void MainWindow::on_actionOPEN_triggered()
                                                     QString(),
                                                     tr("Mesh Files (*.obj *.ply);;ALL(*);;C++ Files (*.cpp *.h)")
                                                     );
+
+
+
     int *size;
-
-
     size  = ui->widget->NewMesh(fileName);
-    ui->showFilename->setText(fileName);
-    std::cout<< size[0] << std::endl;
+    ui->textFileName->setText(fileName);
+    QString vertNum = QString::number(size[0],10);
+    QString faceNum = QString::number(size[1],10);
+    ui->textVertsNum-> setText(vertNum);
+    ui->textFaceNum->setText(faceNum);
 
-    QString s = QString::number(size[0],10);
-    ui->vertsnum->setText(s);
 
 
 }
@@ -65,17 +51,9 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
 
         QWidget::mousePressEvent(e);
 }
-/*
-void MainWindow::wheelEvent(QWheelEvent *e)
-{
-
-        QWidget::wheelEvent(e);
-
-        std::cout<< "do it"<<std::endl;
-}
-*/
 
 void MainWindow::on_actionQUIT_triggered()
 {
     close();
 }
+

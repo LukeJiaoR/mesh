@@ -3,6 +3,17 @@
 
 #include <qfile.h>
 #include <QtOpenGL>
+
+/*
+struct Point{
+    float x;
+    float y;
+    float x;
+    float other1;
+    float other2;
+};
+*/
+
 class LoadFileFOr
 {
 public:
@@ -15,7 +26,7 @@ public:
 protected:
 
 private:
-    float Verts[100000][5];
+    GLfloat   Verts[100000][5];
     int   Faces[100000][5];
 
     int vertsize;

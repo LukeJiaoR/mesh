@@ -7,10 +7,10 @@
 #include "objloader.h"
 #include "loadforobj.h"
 #include "loadfilefor.h"
+#include <QOpenGLFunctions_4_3_Core>
 
 
-
-class GLWidget : public QGLWidget
+class GLWidget : public QGLWidget, protected QOpenGLFunctions_4_3_Core
 {
     Q_OBJECT
 
@@ -60,6 +60,7 @@ private:
     int zRot;
     float scaling;
     QPoint lastPos;
+    float y ;
 
 
 

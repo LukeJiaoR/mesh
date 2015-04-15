@@ -17,13 +17,15 @@ SOURCES += main.cpp\
            mainwindow.cpp \
     loadforobj.cpp \
     objloader.cpp \
-    loadfilefor.cpp
+    loadfilefor.cpp \
+    bspline.cpp
 
 HEADERS  +=  mainwindow.h \
              glwidget.h \
     loadforobj.h \
     objloader.h \
-    loadfilefor.h
+    loadfilefor.h \
+    bspline.h
 
 
 FORMS    +=  mainwindow.ui

@@ -2,7 +2,9 @@
 #include <QtOpenGL>
 #include <math.h>
 
+
 #include "glwidget.h"
+
 
 GLWidget::GLWidget(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
@@ -11,7 +13,10 @@ GLWidget::GLWidget(QWidget *parent)
     xRot = 0;
     yRot = 0;
     zRot = 0;
-    scaling = 1.0;
+
+    scaling =  1;
+
+
     //qtPurple = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0);
 }
 GLWidget::~GLWidget()
@@ -71,34 +76,45 @@ void GLWidget::setZRotation(int angle)
 
 void GLWidget::scalingtheMesh(float x)
 {
+
     std::cout<< "after"<< x << std::endl;
+
 
     scaling += x/2.0;
     updateGL();
 }
+
 void GLWidget::initializeGL()
 {
+    initializeOpenGLFunctions();
 
-    glClearColor(1.0,1.0,1.0,0.0);
+
+    glClearColor(0.1,0.5,0.5,0.0);
     glClearDepth(1.0f);
-    // FileOpen = new sp::ObjLoader();
-    //FileOpen->load("F:\\model\\CUBE.obj");
-    //FileOpen = new loadforobj();
+
     FileOpen = new LoadFileFOr();
 
 
 
-    glEnable(GL_BLEND);	                             //混色
+   //glEnable(GL_BLEND);	                             //混色
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT1);
-    //glEnable(GL_MULTISAMPLE);
+    glEnable(GL_MULTISAMPLE);
+
+    glEnable(GL_COLOR_MATERIAL);            //颜色追踪
+
+
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);         // 真正精细的透视修正
+
     //static GLfloat lightPosition[4] = { 9.0, 9.0, 7.0, 1.0 };
     //glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+
+
     GLfloat LightPosition[]= { 0.0f, 0.0f, 10.0f, 1.0f };
+
 
     GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };          // 环境光参数
     GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };          // 漫射光参数
@@ -113,56 +129,64 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    /*
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
-    glTranslatef(0.0, 0.0, -10.0);
-    glColor3f(1.0f,1.0f,1.0f);
-    glBegin (GL_POLYGON);
 
-          glVertex2i(40, 40);
-          glVertex2i(10, 40);
-          glVertex2i(10, 10);
-          glVertex2i(40, 10);
-          std::cout<<"hereGL-POLYGON"<<endl;
-        glEnd ();*/
-    //glClear(GL_COLOR_BUFFER_BIT);
-   // glColor3f(1.0,1.0,1.0);
-   // glOrtho(0.0,1.0,0.0,1.0,-1.0,1.0);
     int facesize;
     facesize = FileOpen->sizeOfFaces();
 
-     glTranslatef(0.0, 0.0, 0.0);           //平移
+    glTranslatef(0.0, 0.0, 0.0);           //平移
     glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);  //旋转
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
     glScalef(scaling,scaling,scaling);      //放大缩小
     //glScalef(0.5,0.5,0.5);
-    glColor3f(1.0f,0.0f,0.0f);
+    glColor3f(1.0f,0.7f,0.5f);
+    glPolygonMode(GL_FRONT_AND_BACK   ,GL_LINE   ); //画线模式
 
-    for(int p =0;p < facesize;p++){
+    GLfloat vertices[] = {
+    -1.0, -1.0, -1.0 ,
+    -1.0, -1.0, 1.0 ,
+    -1.0, 1.0, -1.0 ,
+    -1.0, 1.0, 1.0 ,
+    1.0, -1.0, -1.0 ,
+    1.0, -1.0, 1.0 ,
+    1.0, 1.0, -1.0 ,
+    1.0, 1.0, 1.0 ,
+    };
+    static GLshort frontIndices[] = {0, 1, 3, 2};
+
+    glGenBuffers(3,buffers);//创建3块buffer
+    glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);//先将第一块buffer绑定到当前
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),vertices, GL_STATIC_DRAW);//将顶点数组放入这个buffer
+    glVertexPointer(3, GL_FLOAT, 0, 0);//指定这个buffer的格式，3代表3个float值为一个顶点，第一个0代表跨度，这里数值是紧密排列的，最后一个是数组的入口地址*point，由于已经将buffer绑定到当前，所以填0
+    glEnableClientState(GL_VERTEX_ARRAY);//使用这个buffer，一定不要忘记
+    glBindBuffer(GL_ARRAY_BUFFER, buffers[1]);//这里开始是将第二块buffer绑定到当前，上传color数据，和顶点的做法一样，不多赘述了
+    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+    glColorPointer(3, GL_FLOAT, 0, 0);
+    glEnableClientState(GL_COLOR_ARRAY);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[2]);//将第三块buffer绑定到当前，用于上传存储顶点索引的数据，因此BUFFER类型变更为GL_ELEMENT_ARRAY_BUFFER
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(frontIndices),frontIndices,GL_STATIC_DRAW);//同样是对buffer进行填充
+    glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));//由于索引定义的是4个点，因此第一个参数mode是四边形，第二个是索引的size，第三个是索引的数据类型。
+    /*
+    glGenBuffers(2,buffer);
+    glBindBuffer(GL_ARRAY_BUFFER,buffer[0]);
+    glBufferData(GL_ARRAY_BUFFER,3*FileOpen->sizeOfVerts(),FileOpen->Verts);
+    glVertexPointer(3,GLfloat,0,0);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffer[1]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,3*FileOpen->sizeOfFaces(),FileOpen->Faces );
+    */
 
 
 
-        glBegin(GL_POLYGON);
-        /* int vertsNumOfFace = Faces[p][0];
-        for(int u  = 1; u<=vertsNumOfFace; u++){
 
-            int k =Faces[p][u];
+    for(int p =0;p < facesize;p++)  //画图
 
-             glVertex3f(Verts[k][0],Verts[k][1],Verts[k][2]);
-             //if(Verts[k][0]==0)
-             //    std::cout<< k << endl;
+   {
+         glBegin(GL_POLYGON);
 
-        }*/
-        FileOpen->draw(p);
+           FileOpen->draw(p);
         glEnd();
-
     }
-
-
-
-
 
 
 
@@ -173,51 +197,38 @@ void GLWidget::paintGL()
 void GLWidget::resizeGL(int width, int height)
 {
 
+
     int side = qMin(width, height);
     glViewport((width - side) / 2, (height - side) / 2, side, side);
 
     //glViewport(0, 0, (GLint)width, (GLint)height);
-
+    std::cout << width<<height<< std::endl;
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+
+
 
     glOrtho(-2.00, +2.00, -2.00, +2.00, -2.01, 2.01);//设置显示三围裁切空间
 
     glMatrixMode(GL_MODELVIEW);
+
 }
 
 int* GLWidget::NewMesh(QString fileName)
 {
-    /*
-    QString fileName = QFileDialog::getOpenFileName(
-                                                    this,
-                                                    tr("Open File"),
-                                                    QString(),
-                                                    tr("Mesh Files (*.obj *.ply);;ALL(*);;C++ Files (*.cpp *.h)")
-                                                    );
-    */
-    //FileOpen = new sp::ObjLoader();
-   // FileOpen = new loadforobj();
-      FileOpen = new LoadFileFOr();
 
-
-   // QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));
-   // QTextCodec::setCodecForLocale(QTextCodec::codecForName("GBK"));
-   if (!fileName.isEmpty())
+    FileOpen = new LoadFileFOr();
+    if (!fileName.isEmpty())
     {
-    //将QString 转为 char 路径不能有中文
-    //char* file;
-    //QByteArray ba = fileName.toLatin1();
-    //file=ba.data();
-    FileOpen->Load(fileName);
-    updateGL();
-   }
-   int *size;
-   size = new int [2];
-   size[0]=FileOpen->sizeOfVerts();
-   std::cout<< FileOpen->sizeOfVerts()<<std::endl;
-   size[1]=FileOpen->sizeOfFaces();
-   return size;
+        FileOpen->Load(fileName);
+        updateGL();
+    }
+    int *size;
+    size = new int [2];
+    size[0]=FileOpen->sizeOfVerts();
+    std::cout<< FileOpen->sizeOfVerts()<<std::endl;
+    size[1]=FileOpen->sizeOfFaces();
+    return size;
 }
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
@@ -240,22 +251,16 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     }
     lastPos = event->pos();
 }
-void GLWidget::wheelEvent(QWheelEvent *event){
+void GLWidget::wheelEvent(QWheelEvent *event)
+{
 
-   // QPoint numPixels = event->pixelDelta();
     QPoint numDegrees = event->angleDelta() / 8;
 
-        /*if (!numPixels.isNull()) {
-            std::cout << numPixels.rx()<<numPixels.ry()<<std::endl;
-        } else */if (!numDegrees.isNull()) {
+        if (!numDegrees.isNull()) {
             QPoint numSteps = numDegrees / 15;
              scalingtheMesh(numSteps.ry());
 
         }
-
-
         event->accept();
 
-    //if(event->buttons() & Qt::UpArrow)
-        //std::cout << "upArrow"<<std::endl;
 }
