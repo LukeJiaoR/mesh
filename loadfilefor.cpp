@@ -7,7 +7,6 @@
 #include <QTextStream>
 #include <iostream>
 #include <ui_mainwindow.h>
-#include <QOpenGLFunctions_4_3_Core>
 LoadFileFOr::LoadFileFOr()
 {
     vertsize = 0;
@@ -19,6 +18,13 @@ void LoadFileFOr::Load(QString filename)
     if (!inf.open(QIODevice::ReadWrite)) {
          std::cout<< "[!] Failed to Open File!"<<std::endl;
     }
+    if(filename.section(".",-1,-1)=="nrb"){
+       std::cout <<2<<std::endl;
+    }
+    if(filename.section(".",-1,-1)=="ply"){
+       std:: cout <<2<< std::endl;
+    }
+
     QTextStream in(&inf);
     bool headerEndTag = false;
 
@@ -65,7 +71,6 @@ void LoadFileFOr::Load(QString filename)
             }
             putFace ++;
             if(putFace == facesize) continue;
-
         }
     }
 
@@ -73,18 +78,24 @@ void LoadFileFOr::Load(QString filename)
     inf.close();
 
 }
-void LoadFileFOr::draw(int p) const
+void LoadFileFOr::draw() const
 {
+    for(int p =0;p < facesize;p++)  //画图
+    {
+         glBegin(GL_POLYGON);
+         int vertsNumOfFace = Faces[p][0];
+         for(int u  = 1; u<=vertsNumOfFace; u++){
+
+             int k =Faces[p][u];
+
+              glVertex3f(Verts[k][0],Verts[k][1],Verts[k][2]);
 
 
-    int vertsNumOfFace = Faces[p][0];
-    for(int u  = 1; u<=vertsNumOfFace; u++){
+         }
 
-        int k =Faces[p][u];
-
-         glVertex3f(Verts[k][0],Verts[k][1],Verts[k][2]);
-
-
+         glEnd();
     }
+
+
 
 }

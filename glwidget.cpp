@@ -1,6 +1,7 @@
 #include <iostream>
 #include <QtOpenGL>
 #include <math.h>
+#include <gl/glu.h>
 
 
 #include "glwidget.h"
@@ -86,11 +87,12 @@ void GLWidget::scalingtheMesh(float x)
 
 void GLWidget::initializeGL()
 {
-    initializeOpenGLFunctions();
+   // initializeOpenGLFunctions();
 
 
     glClearColor(0.1,0.5,0.5,0.0);
     glClearDepth(1.0f);
+
 
     FileOpen = new LoadFileFOr();
 
@@ -142,51 +144,10 @@ void GLWidget::paintGL()
     glColor3f(1.0f,0.7f,0.5f);
     glPolygonMode(GL_FRONT_AND_BACK   ,GL_LINE   ); //画线模式
 
-    GLfloat vertices[] = {
-    -1.0, -1.0, -1.0 ,
-    -1.0, -1.0, 1.0 ,
-    -1.0, 1.0, -1.0 ,
-    -1.0, 1.0, 1.0 ,
-    1.0, -1.0, -1.0 ,
-    1.0, -1.0, 1.0 ,
-    1.0, 1.0, -1.0 ,
-    1.0, 1.0, 1.0 ,
-    };
-    static GLshort frontIndices[] = {0, 1, 3, 2};
-
-    glGenBuffers(3,buffers);//创建3块buffer
-    glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);//先将第一块buffer绑定到当前
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),vertices, GL_STATIC_DRAW);//将顶点数组放入这个buffer
-    glVertexPointer(3, GL_FLOAT, 0, 0);//指定这个buffer的格式，3代表3个float值为一个顶点，第一个0代表跨度，这里数值是紧密排列的，最后一个是数组的入口地址*point，由于已经将buffer绑定到当前，所以填0
-    glEnableClientState(GL_VERTEX_ARRAY);//使用这个buffer，一定不要忘记
-    glBindBuffer(GL_ARRAY_BUFFER, buffers[1]);//这里开始是将第二块buffer绑定到当前，上传color数据，和顶点的做法一样，不多赘述了
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-    glColorPointer(3, GL_FLOAT, 0, 0);
-    glEnableClientState(GL_COLOR_ARRAY);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[2]);//将第三块buffer绑定到当前，用于上传存储顶点索引的数据，因此BUFFER类型变更为GL_ELEMENT_ARRAY_BUFFER
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(frontIndices),frontIndices,GL_STATIC_DRAW);//同样是对buffer进行填充
-    glDrawElements(GL_QUADS, 4, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));//由于索引定义的是4个点，因此第一个参数mode是四边形，第二个是索引的size，第三个是索引的数据类型。
-    /*
-    glGenBuffers(2,buffer);
-    glBindBuffer(GL_ARRAY_BUFFER,buffer[0]);
-    glBufferData(GL_ARRAY_BUFFER,3*FileOpen->sizeOfVerts(),FileOpen->Verts);
-    glVertexPointer(3,GLfloat,0,0);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffer[1]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,3*FileOpen->sizeOfFaces(),FileOpen->Faces );
-    */
 
 
+    FileOpen->draw();
 
-
-    for(int p =0;p < facesize;p++)  //画图
-
-   {
-         glBegin(GL_POLYGON);
-
-           FileOpen->draw(p);
-        glEnd();
-    }
 
 
 
@@ -216,27 +177,42 @@ void GLWidget::resizeGL(int width, int height)
 
 int* GLWidget::NewMesh(QString fileName)
 {
+	/*
+    if(fileName.section(".",-1,-1)=="nrb"){     //判断曲线NURBS文件nrb
+       FileType = "nrb";
+       std::cout <<2<<std::endl;
+       Bsplinec = new Bspline();
+       if (!fileName.isEmpty())
+       {
+           Bsplinec->Load(fileName);
+           updateGL();
+       }
+       int *size;
+       size = new int [2];
+       size[0]=Bsplinec->sizeOfPi();
+       size[1]=Bsplinec->sizeofknots();
+       return size;
+    }*/
+   // if(fileName.section(".",-1,-1)=="ply"){         //判断网格mesh文件ply
+        FileOpen = new LoadFileFOr();
+        if (!fileName.isEmpty())
+        {
+            FileOpen->Load(fileName);
+            updateGL();
+        }
+        int *size;
+        size = new int [2];
+        size[0]=FileOpen->sizeOfVerts();
+        std::cout<< FileOpen->sizeOfVerts()<<std::endl;
+        size[1]=FileOpen->sizeOfFaces();
+        return size;   //返回需要填入UI的信息
+   // }
 
-    FileOpen = new LoadFileFOr();
-    if (!fileName.isEmpty())
-    {
-        FileOpen->Load(fileName);
-        updateGL();
-    }
-    int *size;
-    size = new int [2];
-    size[0]=FileOpen->sizeOfVerts();
-    std::cout<< FileOpen->sizeOfVerts()<<std::endl;
-    size[1]=FileOpen->sizeOfFaces();
-    return size;
 }
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
     lastPos = event->pos();
 }
-//! [9]
-
-//! [10]
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
     int dx = event->x() - lastPos.x();
@@ -245,7 +221,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     if (event->buttons() & Qt::LeftButton) {
         setXRotation(xRot + 8 * dy);
         setYRotation(yRot + 8 * dx);
-    } else if (event->buttons() & Qt::MiddleButton) {
+    } else if (event->buttons() & Qt::RightButton) {
         setXRotation(xRot + 8 * dy);
         setZRotation(zRot + 8 * dx);
     }

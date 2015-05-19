@@ -15,17 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
            glwidget.cpp \
            mainwindow.cpp \
-    loadforobj.cpp \
-    objloader.cpp \
     loadfilefor.cpp \
     bspline.cpp
 
 HEADERS  +=  mainwindow.h \
              glwidget.h \
-    loadforobj.h \
-    objloader.h \
-    loadfilefor.h \
-    bspline.h
+             loadfilefor.h \
+             bspline.h
 
 
 FORMS    +=  mainwindow.ui

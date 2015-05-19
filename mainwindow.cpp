@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 //#include "fileopen.h"
-#include "objloader.h"
 #include <QTextCodec>
 
 #include <QtWidgets>
@@ -29,13 +29,15 @@ void MainWindow::on_actionOPEN_triggered()
                                                     this,
                                                     tr("Open File"),
                                                     QString(),
-                                                    tr("Mesh Files (*.obj *.ply);;ALL(*);;C++ Files (*.cpp *.h)")
+                                                    tr("Mesh Files (*.ply);;ALL(*);;Nurbs Files(*.nrb)")
                                                     );
 
 
 
     int *size;
-    size  = ui->widget->NewMesh(fileName);
+    //loadforobj loadFile;
+    //loadFile.load(filename);
+    size  = ui->widget->NewMesh(fileName);  //NewMesh中对文件进行处理
     ui->textFileName->setText(fileName);
     QString vertNum = QString::number(size[0],10);
     QString faceNum = QString::number(size[1],10);

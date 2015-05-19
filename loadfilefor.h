@@ -19,7 +19,7 @@ class LoadFileFOr
 public:
     LoadFileFOr();
     void Load(QString filename);
-    void draw(int p) const;
+    void draw() const;
     int sizeOfVerts(){ return vertsize;}
     int sizeOfFaces(){ return facesize; }
 

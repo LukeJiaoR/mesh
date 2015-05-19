@@ -4,13 +4,12 @@
 #include <QGLWidget>
 
 
-#include "objloader.h"
-#include "loadforobj.h"
+//#include "bspline.h"
 #include "loadfilefor.h"
-#include <QOpenGLFunctions_4_3_Core>
+//#include <QOpenGLFunctions_4_3_Core>
 
 
-class GLWidget : public QGLWidget, protected QOpenGLFunctions_4_3_Core
+class GLWidget : public QGLWidget    //, protected QOpenGLFunctions_4_3_Core
 {
     Q_OBJECT
 
@@ -53,8 +52,10 @@ protected:
 
 private:
    // sp::ObjLoader *FileOpen;
-   // loadforobj *FileOpen;
     LoadFileFOr *FileOpen;
+   // Bspline *Bsplinec;
+    QString FileType;
+
     int xRot;
     int yRot;
     int zRot;
