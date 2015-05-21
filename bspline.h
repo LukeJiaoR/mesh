@@ -23,9 +23,11 @@ public:
     void Load(QString filename);
     int sizeOfPi(){ return controlp;}
     int sizeofknots(){ return knots;}
-    void BasisFuns(int i,  int p,float u);
+    void BasisFuns(int i, float u);
+	void CurvePoint(const float u);
 	int FindSpan(int n, int p, float u);
 	void DrawBSpline();
+	void output();
 protected:
     void CurvePoint(int n,const float u);
 

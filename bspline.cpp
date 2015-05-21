@@ -2,35 +2,26 @@
 #include <mainwindow.h>
 #include <GL/gl.h>
 #include "bspline.h"
+using namespace std;
 
-#define GNURBS_MAX_ORDER 16
+
 
 
 
 Bspline::Bspline(){
     controlp = 0;
     knots = 0;
-
-	
-    /*U[1000] = {0,0,0,1,2,3,4,4,5,5,5};
-    Pi[1000][3] = {{1,1,1},
-                   {},
-                   
-                  };*/
 }
 
-
-
-
 //判断u所处的knot span 然后计算。返回初始下表
-int Bspline::FindSpan(int n, int p,float u)
+int Bspline::FindSpan(int p,int n,float u)
 {
 
     int low, high, mid;
-    if (u >= U[n + 1]) // savety >= check
-        return (n);
+    if (u >= U[n]) // savety >= check
+        return n;
     low = p;
-    high = n + 1;
+    high = n ;
     mid = (low + high) / 2;
     while (u < U[mid] || u >= U[mid + 1])
     {
@@ -43,17 +34,18 @@ int Bspline::FindSpan(int n, int p,float u)
             low = mid;
         }
         mid = (low + high) / 2;
+
     }
 
-    return (mid);
+    return mid;
 
 }
 
 //计算非零B样条基函数，用Nr来存储计算过的前置基函数，去除重复计算
-void  Bspline::BasisFuns(int i, int p, float u){
+void  Bspline::BasisFuns(int i,  float u){
     int j,r;
     ndu[0][0]  = 1.0;
-    for (j = 1; j <= p; j++)
+    for (j = 1; j <= degree; j++)
     {
         float temp;
         left[j] = u - U[i+1-j];
@@ -116,13 +108,13 @@ void Bspline::Load(QString filename){
      }
 
 }
-void Bspline::CurvePoint(int n,const float u){
-    float w;
+void Bspline::CurvePoint(const float u){  //得到outPoint
+    float w = 0.0;
     Point out;
     out.init();
     int i;
-	int span = FindSpan(n, degree, u);
-	BasisFuns(span, degree, u);
+	int span = FindSpan(0,knots-1, u);
+	BasisFuns(span, u);
     
 	for (i = 0; i <= degree; i++)
     {
@@ -172,15 +164,27 @@ void Bspline::ComputeKnotVector(int N, int pdim, int m, float *uk, float *u)
 }
 
 */
+void Bspline::output(){
+	float MAXspan = U[knots - 1] - U[0];
+	int subNum = knots * 5;
+	float sub = MAXspan / subNum;
+	float u = 0.0;
+	int i;
+	for (i = 0; i < subNum; i++){
+		u = i * sub;
+		CurvePoint(u);
+	}
+}
 
 void Bspline::DrawBSpline ()
 {
-	int i;
-    for (i = 0;i<outPoint.size();i++)
+	output();
+	vector<Point>::iterator curr;
+    for (curr = outPoint.begin();curr != outPoint.end(); ++curr)
     {
         /*绘制NURBS曲线*/
         glBegin(GL_LINE);
-		glVertex3f(outPoint[i].x, outPoint[i].y, outPoint[i].z);
+		glVertex3f(curr->x, curr->y, curr->z);
         glEnd();
     }
 }

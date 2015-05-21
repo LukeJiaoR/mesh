@@ -2,6 +2,7 @@
 #define GLWIDGET_H
 
 #include <QGLWidget>
+#include "bspline.h"
 
 
 //#include "bspline.h"
@@ -52,8 +53,8 @@ protected:
 
 private:
    // sp::ObjLoader *FileOpen;
-    LoadFileFOr *FileOpen;
-   // Bspline *Bsplinec;
+    //LoadFileFOr *FileOpen;
+	Bspline *FileOpen;
     QString FileType;
 
     int xRot;

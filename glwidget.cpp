@@ -94,7 +94,8 @@ void GLWidget::initializeGL()
     glClearDepth(1.0f);
 
 
-    FileOpen = new LoadFileFOr();
+    //FileOpen = new LoadFileFOr();
+	FileOpen = new Bspline();
 
 
 
@@ -132,8 +133,8 @@ void GLWidget::paintGL()
     glLoadIdentity();
 
 
-    int facesize;
-    facesize = FileOpen->sizeOfFaces();
+   // int facesize;
+   // facesize = FileOpen->sizeOfFaces();
 
     glTranslatef(0.0, 0.0, 0.0);           //平移
     glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);  //旋转
@@ -142,11 +143,12 @@ void GLWidget::paintGL()
     glScalef(scaling,scaling,scaling);      //放大缩小
     //glScalef(0.5,0.5,0.5);
     glColor3f(1.0f,0.7f,0.5f);
-    glPolygonMode(GL_FRONT_AND_BACK   ,GL_LINE   ); //画线模式
+    //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE   ); //画线模式
 
 
 
-    FileOpen->draw();
+   // FileOpen->draw();
+	FileOpen->DrawBSpline();
 
 
 
@@ -177,23 +179,23 @@ void GLWidget::resizeGL(int width, int height)
 
 int* GLWidget::NewMesh(QString fileName)
 {
-	/*
-    if(fileName.section(".",-1,-1)=="nrb"){     //判断曲线NURBS文件nrb
+	
+   // if(fileName.section(".",-1,-1)=="nrb"){     //判断曲线NURBS文件nrb
        FileType = "nrb";
        std::cout <<2<<std::endl;
-       Bsplinec = new Bspline();
+	   FileOpen = new Bspline();
        if (!fileName.isEmpty())
        {
-           Bsplinec->Load(fileName);
+		   FileOpen->Load(fileName);
            updateGL();
        }
        int *size;
        size = new int [2];
-       size[0]=Bsplinec->sizeOfPi();
-       size[1]=Bsplinec->sizeofknots();
+	   size[0] = FileOpen->sizeOfPi();
+	   size[1] = FileOpen->sizeofknots();
        return size;
-    }*/
-   // if(fileName.section(".",-1,-1)=="ply"){         //判断网格mesh文件ply
+   // }
+   /* if(fileName.section(".",-1,-1)=="ply"){         //判断网格mesh文件ply
         FileOpen = new LoadFileFOr();
         if (!fileName.isEmpty())
         {
@@ -206,7 +208,7 @@ int* GLWidget::NewMesh(QString fileName)
         std::cout<< FileOpen->sizeOfVerts()<<std::endl;
         size[1]=FileOpen->sizeOfFaces();
         return size;   //返回需要填入UI的信息
-   // }
+    }*/
 
 }
 void GLWidget::mousePressEvent(QMouseEvent *event)
@@ -223,7 +225,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
         setYRotation(yRot + 8 * dx);
     } else if (event->buttons() & Qt::RightButton) {
         setXRotation(xRot + 8 * dy);
-        setZRotation(zRot + 8 * dx);
+        setZRotation(zRot + 8 * dx);  
     }
     lastPos = event->pos();
 }
