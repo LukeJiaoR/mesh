@@ -53,7 +53,7 @@ protected:
 
 private:
    // sp::ObjLoader *FileOpen;
-    //LoadFileFOr *FileOpen;
+   // LoadFileFOr *FileOpen;
 	Bspline *FileOpen;
     QString FileType;
 

@@ -106,6 +106,8 @@ void Bspline::Load(QString filename){
         }
 
      }
+	inf.close();
+	output();
 
 }
 void Bspline::CurvePoint(const float u){  //得到outPoint
@@ -165,6 +167,7 @@ void Bspline::ComputeKnotVector(int N, int pdim, int m, float *uk, float *u)
 
 */
 void Bspline::output(){
+	outPoint.clear();
 	float MAXspan = U[knots - 1] - U[0];
 	int subNum = knots * 5;
 	float sub = MAXspan / subNum;
@@ -178,13 +181,23 @@ void Bspline::output(){
 
 void Bspline::DrawBSpline ()
 {
-	output();
-	vector<Point>::iterator curr;
-    for (curr = outPoint.begin();curr != outPoint.end(); ++curr)
+	//vector<Point>::iterator curr;
+	for (int i = 0; i < controlp-1; i++){
+		/*绘制NURBS曲线*/
+		glPointSize(8.0f);
+		glBegin(GL_LINES);
+		    glVertex3f(Pi[i][0], Pi[i][1], Pi[i][2]);
+			glVertex3f(Pi[i + 1][0], Pi[i + 1][1], Pi[i + 1][2]);
+		glEnd();
+	}
+	for (int i = 1; i < outPoint.size(); i++)
     {
         /*绘制NURBS曲线*/
-        glBegin(GL_LINE);
-		glVertex3f(curr->x, curr->y, curr->z);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glPointSize(1.0f);
+        glBegin(GL_LINES);
+		   glVertex3f(outPoint[i-1].x, outPoint[i-1].y, outPoint[i-1].z);
+		   glVertex3f(outPoint[i ].x, outPoint[i ].y, outPoint[i].z);
         glEnd();
     }
 }

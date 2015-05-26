@@ -90,40 +90,40 @@ void GLWidget::initializeGL()
    // initializeOpenGLFunctions();
 
 
-    glClearColor(0.1,0.5,0.5,0.0);
+    glClearColor(1.0,1.0,1.0,0.0);
     glClearDepth(1.0f);
 
 
-    //FileOpen = new LoadFileFOr();
+   // FileOpen = new LoadFileFOr();
 	FileOpen = new Bspline();
 
 
 
-   //glEnable(GL_BLEND);	                             //混色
-    glEnable(GL_DEPTH_TEST);
+   //glEnable(GL_BLEND);                             //混色
+  /*	  glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT1);
     glEnable(GL_MULTISAMPLE);
+*/
+   // glEnable(GL_COLOR_MATERIAL);            //颜色追踪
 
-    glEnable(GL_COLOR_MATERIAL);            //颜色追踪
 
-
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);         // 真正精细的透视修正
+    //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);         // 真正精细的透视修正
 
     //static GLfloat lightPosition[4] = { 9.0, 9.0, 7.0, 1.0 };
     //glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 
 
-    GLfloat LightPosition[]= { 0.0f, 0.0f, 10.0f, 1.0f };
+    //GLfloat LightPosition[]= { 0.0f, 0.0f, 10.0f, 1.0f };
 
 
-    GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };          // 环境光参数
-    GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };          // 漫射光参数
-    glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
-    glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);
+   // GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };          // 环境光参数
+   // GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };          // 漫射光参数
+   // glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
+    //glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
+   // glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);
 }
 
 void GLWidget::paintGL()
@@ -142,12 +142,16 @@ void GLWidget::paintGL()
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
     glScalef(scaling,scaling,scaling);      //放大缩小
     //glScalef(0.5,0.5,0.5);
-    glColor3f(1.0f,0.7f,0.5f);
+    glColor3f(0.5f,0.5f,0.5f);
     //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE   ); //画线模式
+	glBegin(GL_LINES);
+		glVertex3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(0.0f, 0.0f, 0.0f);
+
+	glEnd();
 
 
-
-   // FileOpen->draw();
+  //  FileOpen->draw();
 	FileOpen->DrawBSpline();
 
 
@@ -165,13 +169,13 @@ void GLWidget::resizeGL(int width, int height)
     glViewport((width - side) / 2, (height - side) / 2, side, side);
 
     //glViewport(0, 0, (GLint)width, (GLint)height);
-    std::cout << width<<height<< std::endl;
+    
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+    //glLoadIdentity();
 
 
 
-    glOrtho(-2.00, +2.00, -2.00, +2.00, -2.01, 2.01);//设置显示三围裁切空间
+    glOrtho(-10.00, +10.00, -10.00, +10.00, -10.01, 10.01);//设置显示三围裁切空间
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -181,7 +185,7 @@ int* GLWidget::NewMesh(QString fileName)
 {
 	
    // if(fileName.section(".",-1,-1)=="nrb"){     //判断曲线NURBS文件nrb
-       FileType = "nrb";
+      FileType = "nrb";
        std::cout <<2<<std::endl;
 	   FileOpen = new Bspline();
        if (!fileName.isEmpty())
@@ -195,7 +199,7 @@ int* GLWidget::NewMesh(QString fileName)
 	   size[1] = FileOpen->sizeofknots();
        return size;
    // }
-   /* if(fileName.section(".",-1,-1)=="ply"){         //判断网格mesh文件ply
+   /*  if(fileName.section(".",-1,-1)=="ply"){       //判断网格mesh文件ply
         FileOpen = new LoadFileFOr();
         if (!fileName.isEmpty())
         {
@@ -208,7 +212,7 @@ int* GLWidget::NewMesh(QString fileName)
         std::cout<< FileOpen->sizeOfVerts()<<std::endl;
         size[1]=FileOpen->sizeOfFaces();
         return size;   //返回需要填入UI的信息
-    }*/
+   // }  */
 
 }
 void GLWidget::mousePressEvent(QMouseEvent *event)
