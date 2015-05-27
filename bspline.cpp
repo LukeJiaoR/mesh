@@ -19,7 +19,7 @@ int Bspline::FindSpan(int p,int n,float u)
 
     int low, high, mid;
     if (u >= U[n]) // savety >= check
-        return n;
+        return n-degree;
     low = p;
     high = n ;
     mid = (low + high) / 2;
@@ -83,6 +83,7 @@ void Bspline::Load(QString filename){
         }
         if(Line.section(" ",0,0)=="control"){
              controlp = Line.section(" ",2,2).toInt();
+			 
         }
         if(Line.section(" ",0,0)=="knots"){
              knots = Line.section(" ",1,1).toInt();
@@ -95,7 +96,11 @@ void Bspline::Load(QString filename){
         if(headerEndTag&&putPi<controlp&&controlp){
                 for(int j=0;j < 4;j++){
                     Pi[putPi][j] = Line.section(" ",j,j).toFloat();
+					
                 }
+				for (int j = 0; j < 3; j++){
+					Pw[putPi][j] = Pi[putPi][j] * Pi[putPi][3];  //权值点
+				}
                 putPi++;
                 if (putPi == controlp ) continue;
         }
@@ -168,36 +173,65 @@ void Bspline::ComputeKnotVector(int N, int pdim, int m, float *uk, float *u)
 */
 void Bspline::output(){
 	outPoint.clear();
-	float MAXspan = U[knots - 1] - U[0];
-	int subNum = knots * 5;
-	float sub = MAXspan / subNum;
-	float u = 0.0;
-	int i;
-	for (i = 0; i < subNum; i++){
-		u = i * sub;
-		CurvePoint(u);
+	float iSpan, sub;
+	
+	for (int i = degree; i < knots - degree-1; i++)
+	{
+		iSpan = U[i + 1] - U[i];
+		sub = iSpan / 5.00000;
+		float u = U[i] ;
+		for (int j= 0; j < 5; j++){
+			float num = (float)j*sub;
+			CurvePoint(u+num);
+		}
 	}
+
 }
 
-void Bspline::DrawBSpline ()
+void Bspline::DrawBSpline () 
 {
 	//vector<Point>::iterator curr;
-	for (int i = 0; i < controlp-1; i++){
-		/*绘制NURBS曲线*/
-		glPointSize(8.0f);
-		glBegin(GL_LINES);
-		    glVertex3f(Pi[i][0], Pi[i][1], Pi[i][2]);
-			glVertex3f(Pi[i + 1][0], Pi[i + 1][1], Pi[i + 1][2]);
+	if (controlp>0)
+	{
+
+	
+	glBegin(GL_POINTS);
+	glVertex3f(Pi[0][0], Pi[0][1], Pi[0][2]); //预处理第一个点
+	glEnd();
+	for (int i = 1; i < controlp; i++){
+		/*绘制NURBS曲线的控制点线段*/
+		glBegin(GL_POINTS);
+		glVertex3f(Pi[i][0], Pi[i][1], Pi[i][2]);
 		glEnd();
-	}
+		glBegin(GL_LINES);
+			glVertex3f(Pi[i-1][0], Pi[i-1][1], Pi[i-1][2]);
+			glVertex3f(Pi[i][0], Pi[i][1], Pi[i][2]);
+		glEnd();
+	}}
+	
+	if (outPoint.size()>0)
+	{ 
+	glPointSize(8.0f);
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glBegin(GL_POINTS);
+	glVertex3f(outPoint[0].x, outPoint[0].y, outPoint[0].z);
+	glEnd();
 	for (int i = 1; i < outPoint.size(); i++)
     {
         /*绘制NURBS曲线*/
+		if (!((i+1)%5))
+		{
+			glColor3f(1.0f, 0.0f, 0.0f);
+			glBegin(GL_POINTS);		
+			glVertex3f(outPoint[i].x, outPoint[i].y, outPoint[i].z);
+			glEnd();
+		}
+		
 		glColor3f(0.0f, 0.0f, 0.0f);
-		glPointSize(1.0f);
         glBegin(GL_LINES);
 		   glVertex3f(outPoint[i-1].x, outPoint[i-1].y, outPoint[i-1].z);
-		   glVertex3f(outPoint[i ].x, outPoint[i ].y, outPoint[i].z);
+		   glVertex3f(outPoint[i].x, outPoint[i].y, outPoint[i].z);
         glEnd();
     }
+	}
 }

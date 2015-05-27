@@ -10,7 +10,7 @@ struct Point{
     float y;
     float z;
   
-    void init(){ x = 0.0;y =0.0;z = 0.0;}
+	void init(){ this->x = 0.0; this->y = 0.0; this->z = 0.0; }
     
 };
 
@@ -36,10 +36,15 @@ protected:
 
 private:
     float  Pi[1000][4];           //控制点 x,y,z,w
+	float Pw[1000][3];          //权值点
+
     float  U[1000];            //节点矢量
-    float  left[1000];         //left[j] = u - U[i+1-j];
+
+	float  left[1000];         //left[j] = u - U[i+1-j];
     float  right[1000];        //right[j] = U[i+j] - u;
+
     float  ndu[100][100];      //存储基函数
+
     int    degree;                  //次数
     int    controlp;                 //控制点个数
     int    knots;
