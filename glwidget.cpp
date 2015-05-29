@@ -14,8 +14,9 @@ GLWidget::GLWidget(QWidget *parent)
     xRot = 0;
     yRot = 0;
     zRot = 0;
-
-    scaling =  1;
+	pos0x = 0.0;
+	pos0y = 0.0;
+    scaling =  1.0;
 
 
     //qtPurple = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0);
@@ -74,16 +75,21 @@ void GLWidget::setZRotation(int angle)
         updateGL();
     }
 }
-
-void GLWidget::scalingtheMesh(float x)
+bool GLWidget::changepos0(double x, double y)
 {
-
-    std::cout<< "after"<< x << std::endl;
-
-
+	pos0x = pos0x - x/10.0;
+	pos0y = pos0y + y/10.0;
+	updateGL();
+	return 1;
+}
+bool GLWidget::scalingtheMesh(float x)  //缩放
+{ 
+	if (scaling == 0 && x < 0)   return 0;
     scaling += x/2.0;
     updateGL();
+	return 1;
 }
+
 
 void GLWidget::initializeGL()
 {
@@ -105,20 +111,13 @@ void GLWidget::initializeGL()
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT1);
-    glEnable(GL_MULTISAMPLE);
-*/
-   // glEnable(GL_COLOR_MATERIAL);            //颜色追踪
-
-
-    //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);         // 真正精细的透视修正
+    glEnable(GL_MULTISAMPLE);*/
+    // glEnable(GL_COLOR_MATERIAL);            //颜色追踪
+  //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);         // 真正精细的透视修正
 
     //static GLfloat lightPosition[4] = { 9.0, 9.0, 7.0, 1.0 };
     //glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-
-
     //GLfloat LightPosition[]= { 0.0f, 0.0f, 10.0f, 1.0f };
-
-
    // GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };          // 环境光参数
    // GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };          // 漫射光参数
    // glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
@@ -132,10 +131,11 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-
    // int facesize;
    // facesize = FileOpen->sizeOfFaces();
-
+	gluLookAt(pos0x, pos0y, 100.0,
+		      pos0x, pos0y, 10.0,
+			  0.0, 1.0, 0.0);
     glTranslatef(0.0, 0.0, 0.0);           //平移
     glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);  //旋转
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
@@ -144,11 +144,18 @@ void GLWidget::paintGL()
     //glScalef(0.5,0.5,0.5);
     glColor3f(0.5f,0.5f,0.5f);
     //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE   ); //画线模式
-	glBegin(GL_LINES);
-		glVertex3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(0.0f, 0.0f, 0.0f);
+	glBegin(GL_QUADS);
+	    glVertex3f(-20.0f, 20.0f, 0.0f); // 左上顶点
+	    glVertex3f(20.0f, 20.0f, 0.0f); // 右上顶点
+	    glVertex3f(20.0f, -20.0f, 0.0f); // 右下顶点
+	    glVertex3f(-20.0f, -20.0f, 0.0f); // 左下顶点
+	glEnd(); // 四边形绘制结束
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glPointSize(8.0f);
+	glBegin(GL_POINTS);
+	glVertex3f(0.0f, 0.0f, 0.0f); 
+	glEnd(); // 四边形绘制结束
 
-	glEnd();
 
 
   //  FileOpen->draw();
@@ -175,7 +182,7 @@ void GLWidget::resizeGL(int width, int height)
 
 
 
-    glOrtho(-10.00, +10.00, -10.00, +10.00, -10.01, 10.01);//设置显示三围裁切空间
+    glOrtho(-10.00, +10.00, -10.00, +10.00, -100.01, 10.01);//设置显示三围裁切空间
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -185,7 +192,7 @@ int* GLWidget::NewMesh(QString fileName)
 {
 	
    // if(fileName.section(".",-1,-1)=="nrb"){     //判断曲线NURBS文件nrb
-      FileType = "nrb";
+       FileType = "nrb";
        std::cout <<2<<std::endl;
 	   FileOpen = new Bspline();
        if (!fileName.isEmpty())
@@ -227,9 +234,9 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     if (event->buttons() & Qt::LeftButton) {
         setXRotation(xRot + 8 * dy);
         setYRotation(yRot + 8 * dx);
-    } else if (event->buttons() & Qt::RightButton) {
-        setXRotation(xRot + 8 * dy);
-        setZRotation(zRot + 8 * dx);  
+    } 
+	else if (event->buttons() & Qt::RightButton) {
+		changepos0((double)dx, (double)dy);
     }
     lastPos = event->pos();
 }

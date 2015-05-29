@@ -63,58 +63,6 @@ void  Bspline::BasisFuns(int i,  float u){
 }
 //计算点
 
-void Bspline::Load(QString filename){
-    QFile inf(filename);
-    if (!inf.open(QIODevice::ReadWrite)) {
-         std::cout<< "[!] Failed to Open File!"<<std::endl;
-    }
-    QTextStream in(&inf);   
-    bool headerEndTag = false;     
-
-    int putPi = 0; //存储控制点计数
-
-
-
-    while(!in.atEnd())
-    {
-        QString Line = in.readLine();
-        if(Line.section(" ",0,0)=="degree"){
-			degree = Line.section(" ", 1, 1).toInt();
-        }
-        if(Line.section(" ",0,0)=="control"){
-             controlp = Line.section(" ",2,2).toInt();
-			 
-        }
-        if(Line.section(" ",0,0)=="knots"){
-             knots = Line.section(" ",1,1).toInt();
-        }
-        if(Line.section(" ",0,0)=="end_header"){
-            headerEndTag = true;
-            continue;
-        }
-        if(Line ==NULL) continue;
-        if(headerEndTag&&putPi<controlp&&controlp){
-                for(int j=0;j < 4;j++){
-                    Pi[putPi][j] = Line.section(" ",j,j).toFloat();
-					
-                }
-				for (int j = 0; j < 3; j++){
-					Pw[putPi][j] = Pi[putPi][j] * Pi[putPi][3];  //权值点
-				}
-                putPi++;
-                if (putPi == controlp ) continue;
-        }
-        if(headerEndTag&&putPi>=controlp){
-            for(int j=0;j<knots;j++){
-                U[j] = Line.section(" ",j,j).toFloat();
-            }
-        }
-
-     }
-	inf.close();
-	output();
-
-}
 void Bspline::CurvePoint(const float u){  //得到outPoint
     float w = 0.0;
     Point out;
@@ -129,48 +77,56 @@ void Bspline::CurvePoint(const float u){  //得到outPoint
 		out.y = out.y + ndu[i][degree] * Pi[span - degree + i][1] * Pi[span - degree + i][3];
 		out.z = out.z + ndu[i][degree] * Pi[span - degree + i][2] * Pi[span - degree + i][3];
 		w = w + ndu[i][degree] * Pi[span - degree + i][3];
-    }
+    } 
     out.x = out.x/w;
     out.y = out.y/w;
     out.z = out.z/w;
     outPoint.push_back(out);
     //TRACE("CurvePoint: fraction %f  x y z: %f %f %f \n", u, outPoint.x, outPoint.y, outPoint.
 }
+
 /*
-void Bspline::CurvePoint2D(int n, int p,
-                           const float *U, const float *P, const float *w,
-                           const float u, Point &outPoint)
-{
-  
-    //TRACE("CurvePoint: fraction %f  x y z: %f %f %f \n", u, outPoint.x, outPoint.y, outPoint.z);
-
+void Bspline::RefineKnotVectCurve(int n, int p,float *X, int r){
+	/*几点细化，根据插入的X[]向量*/
+/*	int j;
+	int m = n + p + 1;
+	int a = FindSpan(n, p, X[0]);
+	int b = FindSpan(n, p, X[r]);
+	b = b + 1;
+	for (j = 0; j<a - p; j++) Qw[j] = Pw[j];
+	for (j = b - 1; j <= n; j++) Qw[j + r + 1] = Pw[j];
+	for (j = 0; j <= a; j++) Ubar[j] = U[j];
+	for (j = b + p; j <= m; j++) Ubar[j + r + 1] = U[j];
+	int i = b + p - 1;
+	int k = b + p + r;
+	for (j = r; j >= 0; j--)
+	{
+		while (X[j] <= U[i] && i>a)
+		{
+			Qw[k - p - 1] = Pw[i - p - 1];
+			Ubar[k] = U[i];
+			k = k - 1;
+			i = i - 1;
+		}
+		Qw[k - p - 1] = Qw[k - p];
+		for (j = r; j >= 0; j--)
+		{
+			int ind = k - p + 1;
+			float alfa = Ubar[k + 1] - X[j];
+			if (abs(alfa) == 0)
+				Qw[ind - 1] = Qw[ind];
+			else
+			{
+				alfa = alfa / (Ubar[k + 1] - U[i - p + 1]);
+				Qw[ind - 1] = alfa * Qw[ind - 1] + (1.0 - alfa) *Qw[ind];
+			}
+		}
+		Ubar[k] = X[j];
+		k = k + 1;
+	}
 }
-bool Bspline::SurfacePoint(
-    float u, float v, int uOrder, int vOrder, int uDimension, int vDimension,
-    const float *uKnot, const float * vKnot,
-    const Point *P, const float *W,
-    float *dest // result
-    )
-{
-
-  
-
-}
-
-void Bspline::ComputeUkVector(int N, float *t, float* uk)
-{
-    
-}
-//
-// calculate the knotvector
-// page 365
-//
-void Bspline::ComputeKnotVector(int N, int pdim, int m, float *uk, float *u)
-{
-   
-}
-
 */
+
 void Bspline::output(){
 	outPoint.clear();
 	float iSpan, sub;
@@ -187,7 +143,62 @@ void Bspline::output(){
 	}
 
 }
+void Bspline::Load(QString filename){
+	QFile inf(filename);
+	if (!inf.open(QIODevice::ReadWrite)) {
+		std::cout << "[!] Failed to Open File!" << std::endl;
+	}
+	QTextStream in(&inf);
+	bool headerEndTag = false;
 
+	int putPi = 0; //存储控制点计数
+
+
+
+	while (!in.atEnd())
+	{
+		QString Line = in.readLine();
+		if (Line.section(" ", 0, 0) == "degree"){
+			degree = Line.section(" ", 1, 1).toInt();
+		}
+		if (Line.section(" ", 0, 0) == "control"){
+			controlp = Line.section(" ", 2, 2).toInt();
+
+		}
+		if (Line.section(" ", 0, 0) == "knots"){
+			knots = Line.section(" ", 1, 1).toInt();
+		}
+		if (Line.section(" ", 0, 0) == "end_header"){
+			headerEndTag = true;
+			continue;
+		}
+		if (Line.section(" ", 0, 0) == "#"){
+			continue;
+		}
+		if (Line == NULL) continue;
+		if (headerEndTag&&putPi<controlp&&controlp){
+			for (int j = 0; j < 4; j++){
+				Pi[putPi][j] = Line.section(" ", j, j).toFloat();
+
+			}
+			for (int j = 0; j < 3; j++){
+				Pw[putPi][j] = Pi[putPi][j] * Pi[putPi][3];  //权值点
+			}
+			Pw[putPi][3] = Pi[putPi][3];
+			putPi++;
+			if (putPi == controlp) continue;
+		}
+		if (headerEndTag&&putPi >= controlp){
+			for (int j = 0; j<knots; j++){
+				U[j] = Line.section(" ", j, j).toFloat();
+			}
+		}
+
+	}
+	inf.close();
+	output();   // 计算outPoint
+
+}
 void Bspline::DrawBSpline () 
 {
 	//vector<Point>::iterator curr;

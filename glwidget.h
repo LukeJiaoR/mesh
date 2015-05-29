@@ -45,8 +45,8 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event );
-
-    void scalingtheMesh(float x);
+	bool changepos0(double x, double);
+    bool scalingtheMesh(float x);
 
 
 
@@ -61,6 +61,7 @@ private:
     int yRot;
     int zRot;
     float scaling;
+	double pos0x, pos0y;
     QPoint lastPos;
     float y ;
 
