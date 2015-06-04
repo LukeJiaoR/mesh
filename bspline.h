@@ -26,7 +26,7 @@ public:
     void BasisFuns(int i, float u);
 	void CurvePoint(const float u);
 	int FindSpan(int n, int p, float u);
-	//void RefineKnotVectCurve(int n, int p, float *X, int r, float *Ubar, float *Qw);
+	void RefineKnotVectCurve(int n, int p);
 	void DrawBSpline();
 	void output();
 protected:

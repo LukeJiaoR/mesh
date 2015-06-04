@@ -75,7 +75,7 @@ void Bspline::CurvePoint(const float u){  //得到outPoint
     {
 		out.x = out.x + ndu[i][degree] * Pi[span - degree + i][0] * Pi[span - degree + i][3];
 		out.y = out.y + ndu[i][degree] * Pi[span - degree + i][1] * Pi[span - degree + i][3];
-		out.z = out.z + ndu[i][degree] * Pi[span - degree + i][2] * Pi[span - degree + i][3];
+		out.0z = out.z + ndu[i][degree] * Pi[span - degree + i][2] * Pi[span - degree + i][3];
 		w = w + ndu[i][degree] * Pi[span - degree + i][3];
     } 
     out.x = out.x/w;
@@ -86,20 +86,20 @@ void Bspline::CurvePoint(const float u){  //得到outPoint
 }
 
 /*
-void Bspline::RefineKnotVectCurve(int n, int p,float *X, int r){
-	/*几点细化，根据插入的X[]向量*/
-/*	int j;
+void Bspline::RefineKnotVectCurve(int n, int p){
+	/*节点细化，根据插入的X[]向量*
+	int j;
 	int m = n + p + 1;
-	int a = FindSpan(n, p, X[0]);
-	int b = FindSpan(n, p, X[r]);
+	int a = FindSpan(0, knots, X[0]);
+	int b = FindSpan(0, knots, X[Xknots]);
 	b = b + 1;
 	for (j = 0; j<a - p; j++) Qw[j] = Pw[j];
-	for (j = b - 1; j <= n; j++) Qw[j + r + 1] = Pw[j];
+	for (j = b - 1; j <= n; j++) Qw[j + Xknots + 1] = Pw[j];
 	for (j = 0; j <= a; j++) Ubar[j] = U[j];
-	for (j = b + p; j <= m; j++) Ubar[j + r + 1] = U[j];
+	for (j = b + p; j <= m; j++) Ubar[j + Xknots + 1] = U[j];
 	int i = b + p - 1;
-	int k = b + p + r;
-	for (j = r; j >= 0; j--)
+	int k = b + p + Xknots;
+	for (j = Xknots; j >= 0; j--)
 	{
 		while (X[j] <= U[i] && i>a)
 		{
@@ -109,7 +109,7 @@ void Bspline::RefineKnotVectCurve(int n, int p,float *X, int r){
 			i = i - 1;
 		}
 		Qw[k - p - 1] = Qw[k - p];
-		for (j = r; j >= 0; j--)
+		for (j = Xknots; j >= 0; j--)
 		{
 			int ind = k - p + 1;
 			float alfa = Ubar[k + 1] - X[j];
@@ -118,7 +118,7 @@ void Bspline::RefineKnotVectCurve(int n, int p,float *X, int r){
 			else
 			{
 				alfa = alfa / (Ubar[k + 1] - U[i - p + 1]);
-				Qw[ind - 1] = alfa * Qw[ind - 1] + (1.0 - alfa) *Qw[ind];
+				Qw[ind - 1] = alfa * Qw[ind - 1] + (1.0 - alfa) *Qw[`	ind];
 			}
 		}
 		Ubar[k] = X[j];

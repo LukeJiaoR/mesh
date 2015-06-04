@@ -77,6 +77,9 @@
     <ClCompile Include="Nurbs-DS.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="LoadFile.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bspline.h">
@@ -92,6 +95,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadFile.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
