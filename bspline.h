@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+
+#include "LoadFile.h"
 using namespace std;
 
 struct Point{    
@@ -16,18 +18,19 @@ struct Point{
 
 
 
-class Bspline
+class Bspline :public LoadFile
 {
+
 public:
     Bspline();
     void Load(QString filename);
-    int sizeOfPi(){ return controlp;}
-    int sizeofknots(){ return knots;}
+	void Draw() ;
+	int sizex(){ return controlp; }
+	int sizey(){ return knots; }
     void BasisFuns(int i, float u);
 	void CurvePoint(const float u);
 	int FindSpan(int n, int p, float u);
 	void RefineKnotVectCurve(int n, int p);
-	void DrawBSpline();
 	void output();
 protected:
     void CurvePoint(int n,const float u);

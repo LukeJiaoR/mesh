@@ -78,7 +78,7 @@ void LoadFileFOr::Load(QString filename)
     inf.close();
 
 }
-void LoadFileFOr::draw() const
+void LoadFileFOr::Draw() 
 {
     for(int p =0;p < facesize;p++)  //画图
     {

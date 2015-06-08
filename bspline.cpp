@@ -75,7 +75,7 @@ void Bspline::CurvePoint(const float u){  //得到outPoint
     {
 		out.x = out.x + ndu[i][degree] * Pi[span - degree + i][0] * Pi[span - degree + i][3];
 		out.y = out.y + ndu[i][degree] * Pi[span - degree + i][1] * Pi[span - degree + i][3];
-		out.0z = out.z + ndu[i][degree] * Pi[span - degree + i][2] * Pi[span - degree + i][3];
+		out.z = out.z + ndu[i][degree] * Pi[span - degree + i][2] * Pi[span - degree + i][3];
 		w = w + ndu[i][degree] * Pi[span - degree + i][3];
     } 
     out.x = out.x/w;
@@ -199,7 +199,7 @@ void Bspline::Load(QString filename){
 	output();   // 计算outPoint
 
 }
-void Bspline::DrawBSpline () 
+void Bspline::Draw()  
 {
 	//vector<Point>::iterator curr;
 	if (controlp>0)

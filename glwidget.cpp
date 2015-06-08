@@ -159,7 +159,7 @@ void GLWidget::paintGL()
 
 
   //  FileOpen->draw();
-	FileOpen->DrawBSpline();
+	FileOpen->Draw();
 
 
 
@@ -191,7 +191,7 @@ void GLWidget::resizeGL(int width, int height)
 int* GLWidget::NewMesh(QString fileName)
 {
 	
-   // if(fileName.section(".",-1,-1)=="nrb"){     //判断曲线NURBS文件nrb
+    if(fileName.section(".",-1,-1)=="nrb"){     //判断曲线NURBS文件nrb
        FileType = "nrb";
        std::cout <<2<<std::endl;
 	   FileOpen = new Bspline();
@@ -202,11 +202,11 @@ int* GLWidget::NewMesh(QString fileName)
        }
        int *size;
        size = new int [2];
-	   size[0] = FileOpen->sizeOfPi();
-	   size[1] = FileOpen->sizeofknots();
+	   size[0] = FileOpen->sizex();
+	   size[1] = FileOpen->sizey();
        return size;
-   // }
-   /*  if(fileName.section(".",-1,-1)=="ply"){       //判断网格mesh文件ply
+    }
+    if(fileName.section(".",-1,-1)=="ply"){       //判断网格mesh文件ply
         FileOpen = new LoadFileFOr();
         if (!fileName.isEmpty())
         {
@@ -215,11 +215,10 @@ int* GLWidget::NewMesh(QString fileName)
         }
         int *size;
         size = new int [2];
-        size[0]=FileOpen->sizeOfVerts();
-        std::cout<< FileOpen->sizeOfVerts()<<std::endl;
-        size[1]=FileOpen->sizeOfFaces();
+        size[0]=FileOpen->sizex();
+        size[1]=FileOpen->sizey();
         return size;   //返回需要填入UI的信息
-   // }  */
+    } 
 
 }
 void GLWidget::mousePressEvent(QMouseEvent *event)

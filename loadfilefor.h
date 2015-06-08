@@ -1,9 +1,12 @@
 #ifndef LOADFILEFOR_H
 #define LOADFILEFOR_H
 
+
 #include <qfile.h>
 #include <QtOpenGL>
 
+
+#include "LoadFile.h"
 /*
 struct Point{
     float x;
@@ -14,14 +17,14 @@ struct Point{
 };
 */
 
-class LoadFileFOr
+class LoadFileFOr : public LoadFile
 {
 public:
     LoadFileFOr();
     void Load(QString filename);
-    void draw() const;
-    int sizeOfVerts(){ return vertsize;}
-    int sizeOfFaces(){ return facesize; }
+    void Draw() ;
+	int sizex(){ return vertsize; }
+	int sizey(){ return facesize; }
 
 protected:
 

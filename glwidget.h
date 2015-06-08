@@ -54,9 +54,10 @@ protected:
 private:
    // sp::ObjLoader *FileOpen;
    // LoadFileFOr *FileOpen;
-	Bspline *FileOpen;
-    QString FileType;
-
+	//Bspline *FileOpen;
+   // QString FileType;
+	LoadFile *FileOpen;
+	string FileType;
     int xRot;
     int yRot;
     int zRot;
