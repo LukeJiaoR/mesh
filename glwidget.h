@@ -10,7 +10,7 @@
 //#include <QOpenGLFunctions_4_3_Core>
 
 
-class GLWidget : public QGLWidget    //, protected QOpenGLFunctions_4_3_Core
+class GLWidget : public QGLWidget    //protected QOpenGLFunctions_4_3_Core
 {
     Q_OBJECT
 
@@ -52,10 +52,6 @@ protected:
 
 
 private:
-   // sp::ObjLoader *FileOpen;
-   // LoadFileFOr *FileOpen;
-	//Bspline *FileOpen;
-   // QString FileType;
 	LoadFile *FileOpen;
 	string FileType;
     int xRot;
@@ -66,16 +62,6 @@ private:
     QPoint lastPos;
     float y ;
 
-
-
-    /*
-    QtLogo *logo;
-    int xRot;
-    int yRot;
-    int zRot;
-    QPoint lastPos;
-    QColor qtGreen;*/
-    //QColor qtPurple;
 };
 
 #endif // QGLWIDGET_H

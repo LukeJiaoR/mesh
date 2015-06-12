@@ -7,15 +7,6 @@
 
 
 #include "LoadFile.h"
-/*
-struct Point{
-    float x;
-    float y;
-    float x;
-    float other1;
-    float other2;
-};
-*/
 
 class LoadFileFOr : public LoadFile
 {

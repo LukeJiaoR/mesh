@@ -1,6 +1,7 @@
 #include <iostream>
 #include <mainwindow.h>
 #include <GL/gl.h>
+
 #include "bspline.h"
 using namespace std;
 
@@ -85,16 +86,28 @@ void Bspline::CurvePoint(const float u){  //得到outPoint
     //TRACE("CurvePoint: fraction %f  x y z: %f %f %f \n", u, outPoint.x, outPoint.y, outPoint.
 }
 
-/*
+
 void Bspline::RefineKnotVectCurve(int n, int p){
-	/*节点细化，根据插入的X[]向量*
+	/*节点细化，根据插入的X[]向量*/
 	int j;
 	int m = n + p + 1;
 	int a = FindSpan(0, knots, X[0]);
 	int b = FindSpan(0, knots, X[Xknots]);
 	b = b + 1;
-	for (j = 0; j<a - p; j++) Qw[j] = Pw[j];
-	for (j = b - 1; j <= n; j++) Qw[j + Xknots + 1] = Pw[j];
+	for (j = 0; j < a - p; j++)
+	{
+		for (int c; c < 4; c++)
+		{
+			Qw[j][c] = Pw[j][c];
+		}
+	}
+	for (j = b - 1; j <= n; j++)
+	{
+		for (int c; c < 4; c++)
+		{
+			Qw[j + Xknots + 1][c] = Pw[j][c];
+		}
+	} 
 	for (j = 0; j <= a; j++) Ubar[j] = U[j];
 	for (j = b + p; j <= m; j++) Ubar[j + Xknots + 1] = U[j];
 	int i = b + p - 1;
@@ -103,29 +116,47 @@ void Bspline::RefineKnotVectCurve(int n, int p){
 	{
 		while (X[j] <= U[i] && i>a)
 		{
-			Qw[k - p - 1] = Pw[i - p - 1];
+			for (int c; c < 4; c++)
+			{
+				Qw[k - p - 1][c] = Pw[i - p - 1][c];
+			}
 			Ubar[k] = U[i];
 			k = k - 1;
 			i = i - 1;
 		}
-		Qw[k - p - 1] = Qw[k - p];
+		for (int c; c < 4; c++)
+		{
+			Qw[k - p - 1][c] = Qw[k - p][c];
+		}
+		
 		for (j = Xknots; j >= 0; j--)
 		{
 			int ind = k - p + 1;
 			float alfa = Ubar[k + 1] - X[j];
 			if (abs(alfa) == 0)
-				Qw[ind - 1] = Qw[ind];
+			{
+				for (int c; c < 4; c++)
+				{
+					Qw[ind - 1][c] = Qw[ind][c];
+				}
+			}
+
+				
 			else
 			{
 				alfa = alfa / (Ubar[k + 1] - U[i - p + 1]);
-				Qw[ind - 1] = alfa * Qw[ind - 1] + (1.0 - alfa) *Qw[`	ind];
+				for (int c; c < 4; c++)
+				{
+					Qw[ind - 1][c] = alfa * Qw[ind - 1][c] + (1.0 - alfa) *Qw[ind][c];
+				}
+				
 			}
 		}
 		Ubar[k] = X[j];
 		k = k + 1;
 	}
 }
-*/
+
 
 void Bspline::output(){
 	outPoint.clear();

@@ -100,7 +100,7 @@ void GLWidget::initializeGL()
     glClearDepth(1.0f);
 
 
-   // FileOpen = new LoadFileFOr();
+   
 	FileOpen = new Bspline();
 
 
@@ -131,8 +131,7 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-   // int facesize;
-   // facesize = FileOpen->sizeOfFaces();
+  
 	gluLookAt(pos0x, pos0y, 100.0,
 		      pos0x, pos0y, 10.0,
 			  0.0, 1.0, 0.0);
@@ -144,6 +143,7 @@ void GLWidget::paintGL()
     //glScalef(0.5,0.5,0.5);
     glColor3f(0.5f,0.5f,0.5f);
     //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE   ); //画线模式
+	/*
 	glBegin(GL_QUADS);
 	    glVertex3f(-20.0f, 20.0f, 0.0f); // 左上顶点
 	    glVertex3f(20.0f, 20.0f, 0.0f); // 右上顶点
@@ -155,12 +155,13 @@ void GLWidget::paintGL()
 	glBegin(GL_POINTS);
 	glVertex3f(0.0f, 0.0f, 0.0f); 
 	glEnd(); // 四边形绘制结束
+	*/
+	
 
 
-
-  //  FileOpen->draw();
+  
 	FileOpen->Draw();
-
+	
 
 
 

@@ -39,9 +39,9 @@ protected:
 
 
 private:
-    float  Pi[1000][4];           //控制点 x,y,z,w
-	float Pw[1000][4];          //权值点
-	float Qw[1000][4];          //插入后的控制点
+    float  Pi[1000][4];         //控制点 x,y,z,w
+	float  Pw[1000][4];         //权值点
+	float  Qw[1000][4];         //插入后的控制点
 
     float  U[1000];            //节点矢量
 	float  Ubar[1000];         //细化后节点矢量
