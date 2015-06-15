@@ -22,21 +22,37 @@ struct point     //普通点
 	void init() { this->x = 0.0; this->y = 0.0; this->z = 0.0; }
 	template<typename T>
 	inline point & operator * (const T &p)
-	{   //重载*运算，进行point和其他的乘法运算，使用形式如 point*p;
-		this->x *= p;
-		this->y *= p;
-		this->z *= p;   //*this->w
-		return *this;
+	{   //重载*运算，进行point和其他的乘法运算，使用形式如 point*p point类型在前;
+		point *q;
+		q = new point;
+		q->x = this->x * p;
+		q->y = this->y * p;
+		q->z = this->z * p;   //*this->w
+		return *q;
+	}
+	template<typename C>
+	inline point & operator / (const C &p)
+	{   //重载*运算，进行point和其他的乘法运算，使用形式如 point*p point类型在前;
+		point *q;
+		q = new point;
+		q->x = this->x / p;
+		q->y = this->y / p;
+		q->z = this->z / p;   //*this->w
+		return *q;
 	}
 	inline point & operator + (const point &p)
 	{
 		//重载+运算，进行两个point相加
-		this->x += p.x;
-		this->y += p.y;
-		this->z += p.z;
-		return *this;
+		point *q;
+		q = new point;
+		q->x = this->x + p.x;
+		q->y = this->y + p.y;
+		q->z = this->z + p.z;   //*this->w
+		return *q;
 	}
 };
+
+
 struct cpoint    //带权点
 {
 	REAL x,
@@ -45,26 +61,31 @@ struct cpoint    //带权点
 		 w;
 	void init() { this->x = 0.0; this->y = 0.0; this->z = 0.0; this->w = 0.0; }
 	template<typename T>
-	inline cpoint & operator * (const T &p) 
-	{   //重载*运算，进行cpoint和其他的乘法运算，使用形式如 cpoint*p;
-		this->x *= p;
-		this->y *= p;
-		this->z *= p;
-		this->w *= p;  //*this->w
-		return *this; } 
-	
+	inline cpoint & operator * (const T &p)
+	{   //重载*运算，进行cpoint和其他的乘法运算，使用形式如 cpoint*p  cpoint类型在前;
+		cpoint *q;
+		q = new cpoint;
+		q->x = this->x * p;
+		q->y = this->y * p;
+		q->z = this->z * p;
+		q->w = this->w * p; //*this->w
+		return *q;
+	}
 	
 	
 	inline cpoint & operator + (const cpoint &p)
 	       { 
 			   //重载+运算，进行两个cpoint相加
-			   this->x += p.x;
-			   this->y += p.y;
-			   this->z += p.z;
-			   this->w += p.w;
-			   return *this;
+			   cpoint *q;
+			   q = new cpoint;
+			   q->x = this->x + p.x;
+			   q->y = this->y + p.y;
+			   q->z = this->z + p.z;
+			   q->w = this->w + p.w; //*this->w
+			   return *q;
 	       }
 };
+
 
 struct cpolygon   //面
 {
@@ -72,11 +93,13 @@ struct cpolygon   //面
 	cpoint *Pw;
 };
  
+
 struct knotvector    //节点矢量
 {
 	INDEX m;
 	REAL * U;
 };
+
 
 struct curve     //曲线
 {

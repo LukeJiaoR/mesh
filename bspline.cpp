@@ -5,7 +5,13 @@
 #include "bspline.h"
 using namespace std;
 
-
+/*
+*n：控制点的最大坐标
+*Pw：控制点
+*P：次数
+*m：节点的最大坐标
+*U[i]：节点
+*/
 
 
 
@@ -74,14 +80,19 @@ void Bspline::CurvePoint(const float u){  //得到outPoint
     
 	for (i = 0; i <= degree; i++)
     {
-		out.x = out.x + ndu[i][degree] * Pi[span - degree + i].x * Pi[span - degree + i].w;
-		out.y = out.y + ndu[i][degree] * Pi[span - degree + i].y * Pi[span - degree + i].w;
-		out.z = out.z + ndu[i][degree] * Pi[span - degree + i].z * Pi[span - degree + i].w;
-		w = w + ndu[i][degree] * Pi[span - degree + i].w;
+		cpoint *p;
+		p = new cpoint;
+		float c = ndu[i][degree];
+		*p = Pw[span - degree + i] * c;
+		out.x = out.x + p->x;   //ndu[i][degree] * Pi[span - degree + i].x * Pi[span - degree + i].w;
+		out.y = out.y + p->y;   //ndu[i][degree] * Pi[span - degree + i].y * Pi[span - degree + i].w;
+		out.z = out.z + p->z;   //ndu[i][degree] * Pi[span - degree + i].z * Pi[span - degree + i].w;
+		w = w + p->w;           //ndu[i][degree] * Pi[span - degree + i].w;
     } 
-    out.x = out.x/w;
-    out.y = out.y/w;
-    out.z = out.z/w;
+	out = out / w;
+    //out.x = out.x/w;
+    //out.y = out.y/w;
+    //out.z = out.z/w;
     outPoint.push_back(out);
     //TRACE("CurvePoint: fraction %f  x y z: %f %f %f \n", u, outPoint.x, outPoint.y, outPoint.
 }
@@ -91,6 +102,7 @@ void Bspline::RefineKnotVectCurve(int n, int p){
 	/*节点细化，根据插入的X[]向量*/
 	int j;
 	int m = n + p + 1;
+	
 	int a = FindSpan(0, knots, X[0]);
 	int b = FindSpan(0, knots, X[Xknots]);
 	b = b + 1;
@@ -299,7 +311,7 @@ void Bspline::Draw()
 			glEnd();
 		}
 		
-		glColor3f(0.0f, 0.0f, 0.0f);
+		glColor3f(0.5f, 0.5f, 0.5f);
         glBegin(GL_LINES);
 		   glVertex3f(outPoint[i-1].x, outPoint[i-1].y, outPoint[i-1].z);
 		   glVertex3f(outPoint[i].x, outPoint[i].y, outPoint[i].z);
