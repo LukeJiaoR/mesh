@@ -5,16 +5,12 @@
 #include <vector>
 
 #include "LoadFile.h"
+#include "Nurbs-DS.h"
+
+
 using namespace std;
 
-struct Point{    
-    float x;
-    float y;
-    float z;
-  
-	void init(){ this->x = 0.0; this->y = 0.0; this->z = 0.0; }
-    
-};
+
 
 
 
@@ -39,9 +35,14 @@ protected:
 
 
 private:
-    float  Pi[1000][4];         //控制点 x,y,z,w
-	float  Pw[1000][4];         //权值点
-	float  Qw[1000][4];         //插入后的控制点
+    //float  Pi[1000][4];         //控制点 x,y,z,w
+	//float  Pw[1000][4];         //权值点
+	//float  Qw[1000][4];         //插入后的控制点
+
+	vector<cpoint> Pi;            //控制点 x,y,z,w
+	vector<cpoint> Pw;            //权值点
+	vector<cpoint> Qw;            //插入后的控制点
+	
 
     float  U[1000];            //节点矢量
 	float  Ubar[1000];         //细化后节点矢量
@@ -56,7 +57,7 @@ private:
     int    controlp;                //控制点个数
     int    knots;                   //节点个数
 	int    Xknots;                  //需要插入的节点个个数
-    vector<Point> outPoint;         //NURBS最终绘制点
+    vector<point> outPoint;         //NURBS最终绘制点
 };
 
 #endif // BSPLINE_H

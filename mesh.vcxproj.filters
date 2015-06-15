@@ -74,11 +74,11 @@
     <ClCompile Include="Release\moc_mainwindow.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Nurbs-DS.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="LoadFile.cpp">
       <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Nurbs-DS.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
