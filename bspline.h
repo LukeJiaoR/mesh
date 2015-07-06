@@ -52,11 +52,13 @@ private:
     float  right[1000];        //right[j] = U[i+j] - u;
 
     float  ndu[100][100];      //存储基函数
-
+	float  ders[100][100];
+	
     int    degree;                  //次数
     int    controlp;                //控制点个数
     int    knots;                   //节点个数
 	int    Xknots;                  //需要插入的节点个个数
+	
     vector<point> outPoint;         //NURBS最终绘制点
 };
 

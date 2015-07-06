@@ -52,7 +52,8 @@ int Bspline::FindSpan(int p,int n,float u)
 void  Bspline::BasisFuns(int i,  float u){
     int j,r;
     ndu[0][0]  = 1.0;
-    for (j = 1; j <= degree; j++)
+	int p = degree;
+    for (j = 1; j <= p; j++)
     {
         float temp;
         left[j] = u - U[i+1-j];
@@ -67,6 +68,54 @@ void  Bspline::BasisFuns(int i,  float u){
         }
         ndu[j][j] = saved;
    }
+	for (j = 0; j <= p; j++)
+	{
+		ders[0][j] = ndu[j][p];
+	}
+	for (r = 0; r <= p; r++)
+	{
+		int s1 = 0, s2 = 1;
+		float a[100][100] = {0};
+		a[0][0] = 1.0;
+		for (int k = 1; k <= knots; k++)
+		{
+			float d = 0.0;
+			int j1 = 0, j2 = 0;
+			int rk = r - k;
+			int pk = p - k;
+			if (r >= k)
+			{ 
+				a[s2][0] = a[s1][0] / ndu[pk - 1][rk];
+				d = a[s2][0] * ndu[rk][pk];
+			}
+			if (rk >= -1) j1 = 1;
+			else          j1 = -rk;
+			if (r - 1 <= pk)  j2 = k - 1;
+			else              j2 = p - r;
+			for (j = j1; j <= j2; j++)
+			{
+				a[s2][k] = (a[s1][j] - a[s1][j-1]) / ndu[pk - 1][rk];
+				d = a[s2][j] * ndu[rk+j][pk];
+			}
+			if (r <= pk)
+			{
+				a[s2][k] = -a[s1][k -1] / ndu[pk + 1][r];
+				d = a[s2][k] * ndu[r][pk];
+			}
+			ders[k][r] = d;
+			j = s1;
+			s1 = s2;
+			s2 = j;
+
+		}
+		r = p;
+		for (int k = 1; k <= knots; k++)
+		{
+			for (j = 0; j <= p; j++)
+				r *= (p - k);
+		}
+
+	}
 }
 //计算点
 
@@ -90,11 +139,10 @@ void Bspline::CurvePoint(const float u){  //得到outPoint
 		w = w + p->w;           //ndu[i][degree] * Pi[span - degree + i].w;
     } 
 	out = out / w;
-    //out.x = out.x/w;
-    //out.y = out.y/w;
-    //out.z = out.z/w;
+  
+
     outPoint.push_back(out);
-    //TRACE("CurvePoint: fraction %f  x y z: %f %f %f \n", u, outPoint.x, outPoint.y, outPoint.
+   
 }
 
 
@@ -109,21 +157,12 @@ void Bspline::RefineKnotVectCurve(int n, int p){
 	for (j = 0; j < a - p; j++)
 	{
 		Qw[j] = Pw[j];
-		/*
-		for (int c; c < 4; c++)
-		{
-			Qw[j][c] = Pw[j][c];
-		}
-		*/
+	
 	}
 	for (j = b - 1; j <= n; j++)
 	{
 		Qw[j + Xknots + 1] = Pw[j];
-		/*
-		for (int c; c < 4; c++)
-		{
-			Qw[j + Xknots + 1][c] = Pw[j][c];
-		}*/
+		
 	} 
 	for (j = 0; j <= a; j++) Ubar[j] = U[j];
 	for (j = b + p; j <= m; j++) Ubar[j + Xknots + 1] = U[j];
@@ -134,21 +173,11 @@ void Bspline::RefineKnotVectCurve(int n, int p){
 		while (X[j] <= U[i] && i>a)
 		{
 			Qw[k - p - 1] = Pw[i - p - 1];
-			/*
-			for (int c; c < 4; c++)
-			{
-				Qw[k - p - 1][c] = Pw[i - p - 1][c];
-			}*/
 			Ubar[k] = U[i];
 			k = k - 1;
 			i = i - 1;
 		}
 		Qw[k - p - 1] = Qw[k - p];
-		/*
-		for (int c; c < 4; c++)
-		{
-			Qw[k - p - 1][c] = Qw[k - p][c];
-		}*/
 		
 		for (j = Xknots; j >= 0; j--)
 		{
@@ -157,11 +186,6 @@ void Bspline::RefineKnotVectCurve(int n, int p){
 			if (abs(alfa) == 0)
 			{
 				Qw[ind - 1] = Qw[ind];
-				/*
-				for (int c; c < 4; c++)
-				{
-					Qw[ind - 1][c] = Qw[ind][c];
-				}*/
 			}
 
 				
@@ -169,11 +193,6 @@ void Bspline::RefineKnotVectCurve(int n, int p){
 			{
 				alfa = alfa / (Ubar[k + 1] - U[i - p + 1]);
 				Qw[ind - 1] = Qw[ind - 1] * alfa + Qw[ind] * (1.0 - alfa) ;
-				/*
-				for (int c; c < 4; c++)
-				{
-					Qw[ind - 1][c] = alfa * Qw[ind - 1][c] + (1.0 - alfa) *Qw[ind][c];
-				}*/
 				
 			}
 		}
@@ -188,17 +207,19 @@ void Bspline::RefineKnotVectCurve(int n, int p){
 void Bspline::output(){
 	outPoint.clear();
 	float iSpan, sub;
-	
+	float u = 0.0;
 	for (int i = degree; i < knots - degree-1; i++)
 	{
 		iSpan = U[i + 1] - U[i];
-		sub = iSpan / 5.00000;
-		float u = U[i] ;
+		sub = iSpan / 5.0;
+		u = U[i] ;
+		
 		for (int j= 0; j < 5; j++){
 			float num = (float)j*sub;
 			CurvePoint(u+num);
 		}
 	}
+	//CurvePoint(U[knots-1]);
 
 }
 void Bspline::Load(QString filename){
@@ -210,8 +231,6 @@ void Bspline::Load(QString filename){
 	bool headerEndTag = false;
 
 	int putPi = 0; //存储控制点计数
-
-
 
 	while (!in.atEnd())
 	{
@@ -237,21 +256,13 @@ void Bspline::Load(QString filename){
 		if (headerEndTag&&putPi<controlp&&controlp){
 			cpoint put;
 			put.init();
-			/*
-			for (int j = 0; j < 4; j++){
-				Pi[putPi][j] = Line.section(" ", j, j).toFloat();
-
-			}*/
 			put.x = Line.section(" ", 0, 0).toFloat();
 			put.y = Line.section(" ", 1, 1).toFloat();
 			put.z = Line.section(" ", 2, 2).toFloat();
 			put.w = Line.section(" ", 3, 3).toFloat();
 			Pi.push_back(put);
-			/*
-			for (int j = 0; j < 3; j++){
-				Pw[putPi][j] = Pi[putPi][j] * Pi[putPi][3];  //权值点
-			}
-			Pw[putPi][3] = Pi[putPi][3];*/
+			
+
 
 			put.x = put.x * put.w;
 			put.y = put.y * put.w;
@@ -269,6 +280,7 @@ void Bspline::Load(QString filename){
 
 	}
 	inf.close();
+
 	output();   // 计算outPoint
 
 }
@@ -285,7 +297,7 @@ void Bspline::Draw()
 	for (int i = 1; i < controlp; i++){
 		/*绘制NURBS曲线的控制点线段*/
 		glBegin(GL_POINTS);
-		glVertex3f(Pi[i].x, Pi[i].y, Pi[i].z);
+		    glVertex3f(Pi[i].x, Pi[i].y, Pi[i].z);
 		glEnd();
 		glBegin(GL_LINES);
 			glVertex3f(Pi[i-1].x, Pi[i-1].y, Pi[i-1].z);
@@ -303,7 +315,7 @@ void Bspline::Draw()
 	for (int i = 1; i < outPoint.size(); i++)
     {
         /*绘制NURBS曲线*/
-		if (!((i+1)%5))
+		if (!((i)%5))
 		{
 			glColor3f(1.0f, 0.0f, 0.0f);
 			glBegin(GL_POINTS);		

@@ -2,7 +2,7 @@
 using namespace std;
 
 
-/*定义通用数据类型 */
+/*定义通用数据类型  */
 typedef int INDEX;   
 typedef short FLAG;
 typedef int INTEGER;
@@ -66,7 +66,7 @@ struct cpoint    //带权点
 		cpoint *q;
 		q = new cpoint;
 		q->x = this->x * p;
-		q->y = this->y * p;
+		q->y = this->y * p; 
 		q->z = this->z * p;
 		q->w = this->w * p; //*this->w
 		return *q;
