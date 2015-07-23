@@ -2,13 +2,13 @@
 #define BSPLINE_H
 
 #include <iostream>
-#include <vector>
+
 
 #include "LoadFile.h"
-#include "Nurbs-DS.h"
 
 
-using namespace std;
+
+using std::vector;
 
 
 
@@ -23,9 +23,7 @@ public:
 	void Draw() ;
 	int sizex(){ return controlp; }
 	int sizey(){ return knots; }
-    void BasisFuns(int i, float u);
 	void CurvePoint(const float u);
-	int FindSpan(int n, int p, float u);
 	void RefineKnotVectCurve(int n, int p);
 	void output();
 protected:

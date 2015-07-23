@@ -1,0 +1,237 @@
+﻿生成启动时间为 2015/7/21 8:25:57。
+     1>项目“F:\Document\gitHUB\mesh.vcxproj”在节点 2 上(Build 个目标)。
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of moc_glwidget.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are Debug\moc_glwidget.cpp, Release\moc_glwidget.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of moc_mainwindow.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are Debug\moc_mainwindow.cpp, Release\moc_mainwindow.cpp.
+     1>ClCompile:
+         D:\Visual Studio 2013\VC\bin\x86_amd64\CL.exe /c /I. /ID:\Qt\Qt5.5.0\5.5\msvc2013_64\include /ID:\Qt\Qt5.5.0\5.5\msvc2013_64\include\QtOpenGL /ID:\Qt\Qt5.5.0\5.5\msvc2013_64\include\QtWidgets /ID:\Qt\Qt5.5.0\5.5\msvc2013_64\include\QtGui /ID:\Qt\Qt5.5.0\5.5\msvc2013_64\include\QtCore /Idebug /I. /I"D:\Qt\Qt5.5.0\5.5\msvc2013_64\mkspecs\win32-msvc2013" /I.\GeneratedFiles /Zi /nologo /W3 /WX- /Od /D _WINDOWS /D UNICODE /D WIN32 /D WIN64 /D QT_OPENGL_LIB /D QT_WIDGETS_LIB /D QT_GUI_LIB /D QT_CORE_LIB /D QT_DLL /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt -Zm200 -w34100 -w34189 Debug\moc_glwidget.cpp Debug\moc_mainwindow.cpp LoadFile.cpp Nurbs.cpp basis.cpp bspline.cpp glwidget.cpp loadfilefor.cpp main.cpp mainwindow.cpp
+         moc_glwidget.cpp
+     1>f:\document\github\bspline.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>f:\document\github\Nurbs-DS.h(18): error C2011: “point”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>f:\document\github\Nurbs-DS.h(57): error C2011: “cpoint”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>f:\document\github\Nurbs-DS.h(91): error C2011: “cpolygon”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(91) : 参见“cpolygon”的声明
+     1>f:\document\github\Nurbs-DS.h(98): error C2011: “knotvector”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(98) : 参见“knotvector”的声明
+     1>f:\document\github\Nurbs-DS.h(105): error C2011: “curve”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(105) : 参见“curve”的声明
+         moc_mainwindow.cpp
+     1>f:\document\github\bspline.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>f:\document\github\Nurbs-DS.h(18): error C2011: “point”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>f:\document\github\Nurbs-DS.h(57): error C2011: “cpoint”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>f:\document\github\Nurbs-DS.h(91): error C2011: “cpolygon”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(91) : 参见“cpolygon”的声明
+     1>f:\document\github\Nurbs-DS.h(98): error C2011: “knotvector”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(98) : 参见“knotvector”的声明
+     1>f:\document\github\Nurbs-DS.h(105): error C2011: “curve”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(105) : 参见“curve”的声明
+         LoadFile.cpp
+         Nurbs.cpp
+     1>Nurbs.cpp(286): error C2679: 二进制“=”: 没有找到接受“float”类型的右操作数的运算符(或没有可接受的转换)
+                 f:\document\github\Nurbs-DS.h(87): 可能是“cpoint &cpoint::operator =(const cpoint &)”
+                 尝试匹配参数列表“(cpoint, float)”时
+     1>Nurbs.cpp(297): error C2065: “outPoint”: 未声明的标识符
+     1>Nurbs.cpp(297): error C2228: “.push_back”的左边必须有类/结构/联合
+                 类型是“unknown-type”
+         basis.cpp
+     1>basis.cpp(180): warning C4100: “m”: 未引用的形参
+         bspline.cpp
+     1>bspline.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>f:\document\github\bspline.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>f:\document\github\Nurbs-DS.h(18): error C2011: “point”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>f:\document\github\Nurbs-DS.h(57): error C2011: “cpoint”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>f:\document\github\Nurbs-DS.h(91): error C2011: “cpolygon”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(91) : 参见“cpolygon”的声明
+     1>f:\document\github\Nurbs-DS.h(98): error C2011: “knotvector”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(98) : 参见“knotvector”的声明
+     1>f:\document\github\Nurbs-DS.h(105): error C2011: “curve”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(105) : 参见“curve”的声明
+     1>bspline.cpp(30): error C2079: “out”使用未定义的 struct“point”
+     1>bspline.cpp(31): error C2228: “.init”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(42): error C2228: “.x”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(42): error C2027: 使用了未定义类型“cpoint”
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(42): error C2227: “->x”的左边必须指向类/结构/联合/泛型类型
+     1>bspline.cpp(43): error C2228: “.y”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(43): error C2027: 使用了未定义类型“cpoint”
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(43): error C2227: “->y”的左边必须指向类/结构/联合/泛型类型
+     1>bspline.cpp(44): error C2228: “.z”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(44): error C2027: 使用了未定义类型“cpoint”
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(44): error C2227: “->z”的左边必须指向类/结构/联合/泛型类型
+     1>bspline.cpp(45): error C2027: 使用了未定义类型“cpoint”
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(45): error C2227: “->w”的左边必须指向类/结构/联合/泛型类型
+     1>bspline.cpp(50): error C2664: “void std::vector<point,std::allocator<_Ty>>::push_back(const point &)”: 无法将参数 1 从“int”转换为“point &&”
+                 with
+                 [
+                     _Ty=point
+                 ]
+                 原因如下:  无法从“int”转换为“point”
+                 源或目标有不完整类型
+     1>bspline.cpp(163): error C2079: “put”使用未定义的 struct“cpoint”
+     1>bspline.cpp(164): error C2228: “.init”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(165): error C2228: “.x”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(166): error C2228: “.y”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(167): error C2228: “.z”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(168): error C2228: “.w”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(169): error C2664: “void std::vector<cpoint,std::allocator<_Ty>>::push_back(const cpoint &)”: 无法将参数 1 从“int”转换为“cpoint &&”
+                 with
+                 [
+                     _Ty=cpoint
+                 ]
+                 原因如下:  无法从“int”转换为“cpoint”
+                 源或目标有不完整类型
+     1>bspline.cpp(173): error C2228: “.x”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(173): error C2228: “.w”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(174): error C2228: “.y”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(174): error C2228: “.w”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(175): error C2228: “.z”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(175): error C2228: “.w”的左边必须有类/结构/联合
+                 类型是“int”
+     1>bspline.cpp(176): error C2664: “void std::vector<cpoint,std::allocator<_Ty>>::push_back(const cpoint &)”: 无法将参数 1 从“int”转换为“cpoint &&”
+                 with
+                 [
+                     _Ty=cpoint
+                 ]
+                 原因如下:  无法从“int”转换为“cpoint”
+                 源或目标有不完整类型
+     1>bspline.cpp(201): error C2027: 使用了未定义类型“cpoint”
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(201): error C2228: “.x”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(201): error C2228: “.y”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(201): error C2228: “.z”的左边必须有类/结构/联合
+     1>bspline.cpp(201): error C2660: “glVertex3f”: 函数不接受 1 个参数
+     1>bspline.cpp(206): error C2027: 使用了未定义类型“cpoint”
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(206): error C2228: “.x”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(206): error C2228: “.y”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(206): error C2228: “.z”的左边必须有类/结构/联合
+     1>bspline.cpp(206): error C2660: “glVertex3f”: 函数不接受 1 个参数
+     1>bspline.cpp(209): error C2027: 使用了未定义类型“cpoint”
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(209): error C2228: “.x”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(209): error C2228: “.y”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(209): error C2228: “.z”的左边必须有类/结构/联合
+     1>bspline.cpp(209): error C2660: “glVertex3f”: 函数不接受 1 个参数
+     1>bspline.cpp(210): error C2027: 使用了未定义类型“cpoint”
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(210): error C2228: “.x”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(210): error C2228: “.y”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>bspline.cpp(210): error C2228: “.z”的左边必须有类/结构/联合
+     1>bspline.cpp(210): error C2660: “glVertex3f”: 函数不接受 1 个参数
+     1>bspline.cpp(219): error C2027: 使用了未定义类型“point”
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>bspline.cpp(219): error C2228: “.x”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>bspline.cpp(219): error C2228: “.y”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>bspline.cpp(219): error C2228: “.z”的左边必须有类/结构/联合
+     1>bspline.cpp(219): error C2660: “glVertex3f”: 函数不接受 1 个参数
+     1>bspline.cpp(228): error C2027: 使用了未定义类型“point”
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>bspline.cpp(228): error C2228: “.x”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>bspline.cpp(228): error C2228: “.y”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>bspline.cpp(228): error C2228: “.z”的左边必须有类/结构/联合
+     1>bspline.cpp(228): error C2660: “glVertex3f”: 函数不接受 1 个参数
+     1>bspline.cpp(234): error C2027: 使用了未定义类型“point”
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>bspline.cpp(234): error C2228: “.x”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>bspline.cpp(234): error C2228: “.y”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>bspline.cpp(234): error C2228: “.z”的左边必须有类/结构/联合
+     1>bspline.cpp(234): error C2660: “glVertex3f”: 函数不接受 1 个参数
+     1>bspline.cpp(235): error C2027: 使用了未定义类型“point”
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>bspline.cpp(235): error C2228: “.x”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>bspline.cpp(235): error C2228: “.y”的左边必须有类/结构/联合
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>bspline.cpp(235): error C2228: “.z”的左边必须有类/结构/联合
+     1>bspline.cpp(235): error C2660: “glVertex3f”: 函数不接受 1 个参数
+         glwidget.cpp
+     1>glwidget.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>f:\document\github\bspline.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>f:\document\github\Nurbs-DS.h(18): error C2011: “point”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>f:\document\github\Nurbs-DS.h(57): error C2011: “cpoint”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>f:\document\github\Nurbs-DS.h(91): error C2011: “cpolygon”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(91) : 参见“cpolygon”的声明
+     1>f:\document\github\Nurbs-DS.h(98): error C2011: “knotvector”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(98) : 参见“knotvector”的声明
+     1>f:\document\github\Nurbs-DS.h(105): error C2011: “curve”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(105) : 参见“curve”的声明
+         loadfilefor.cpp
+     1>f:\document\github\bspline.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>f:\document\github\Nurbs-DS.h(18): error C2011: “point”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>f:\document\github\Nurbs-DS.h(57): error C2011: “cpoint”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>f:\document\github\Nurbs-DS.h(91): error C2011: “cpolygon”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(91) : 参见“cpolygon”的声明
+     1>f:\document\github\Nurbs-DS.h(98): error C2011: “knotvector”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(98) : 参见“knotvector”的声明
+     1>f:\document\github\Nurbs-DS.h(105): error C2011: “curve”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(105) : 参见“curve”的声明
+         main.cpp
+     1>f:\document\github\bspline.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>f:\document\github\Nurbs-DS.h(18): error C2011: “point”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>f:\document\github\Nurbs-DS.h(57): error C2011: “cpoint”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>f:\document\github\Nurbs-DS.h(91): error C2011: “cpolygon”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(91) : 参见“cpolygon”的声明
+     1>f:\document\github\Nurbs-DS.h(98): error C2011: “knotvector”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(98) : 参见“knotvector”的声明
+     1>f:\document\github\Nurbs-DS.h(105): error C2011: “curve”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(105) : 参见“curve”的声明
+         mainwindow.cpp
+     1>f:\document\github\bspline.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>f:\document\github\Nurbs-DS.h(18): error C2011: “point”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(18) : 参见“point”的声明
+     1>f:\document\github\Nurbs-DS.h(57): error C2011: “cpoint”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(57) : 参见“cpoint”的声明
+     1>f:\document\github\Nurbs-DS.h(91): error C2011: “cpolygon”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(91) : 参见“cpolygon”的声明
+     1>f:\document\github\Nurbs-DS.h(98): error C2011: “knotvector”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(98) : 参见“knotvector”的声明
+     1>f:\document\github\Nurbs-DS.h(105): error C2011: “curve”:“struct”类型重定义
+                 f:\document\github\Nurbs-DS.h(105) : 参见“curve”的声明
+         正在生成代码...
+     1>已完成生成项目“F:\Document\gitHUB\mesh.vcxproj”(Build 个目标)的操作 - 失败。
+
+生成失败。
+
+已用时间 00:00:09.00

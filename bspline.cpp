@@ -20,112 +20,17 @@ Bspline::Bspline(){
     knots = 0;
 }
 
-//判断u所处的knot span 然后计算。返回初始下表
-int Bspline::FindSpan(int p,int n,float u)
-{
 
-    int low, high, mid;
-    if (u >= U[n]) // savety >= check
-        return n-degree;
-    low = p;
-    high = n ;
-    mid = (low + high) / 2;
-    while (u < U[mid] || u >= U[mid + 1])
-    {
-        if (u < U[mid])
-        {
-            high = mid;
-        }
-        else
-        {
-            low = mid;
-        }
-        mid = (low + high) / 2;
-
-    }
-
-    return mid;
-
-}
-
-//计算非零B样条基函数，用Nr来存储计算过的前置基函数，去除重复计算
-void  Bspline::BasisFuns(int i,  float u){
-    int j,r;
-    ndu[0][0]  = 1.0;
-	int p = degree;
-    for (j = 1; j <= p; j++)
-    {
-        float temp;
-        left[j] = u - U[i+1-j];
-        right[j] = U[i+j] - u;
-        float saved = 0.0;  
-        for (r = 0;r < j ; r++)
-        {
-            ndu[j][r] = right[r+1] + left[j-r];
-            temp = ndu[r][j-1]/ndu[j][r];
-            ndu[r][j] = saved + right[r+1]*temp;
-            saved = left[j-r]*temp;
-        }
-        ndu[j][j] = saved;
-   }
-	for (j = 0; j <= p; j++)
-	{
-		ders[0][j] = ndu[j][p];
-	}
-	for (r = 0; r <= p; r++)
-	{
-		int s1 = 0, s2 = 1;
-		float a[100][100] = {0};
-		a[0][0] = 1.0;
-		for (int k = 1; k <= knots; k++)
-		{
-			float d = 0.0;
-			int j1 = 0, j2 = 0;
-			int rk = r - k;
-			int pk = p - k;
-			if (r >= k)
-			{ 
-				a[s2][0] = a[s1][0] / ndu[pk - 1][rk];
-				d = a[s2][0] * ndu[rk][pk];
-			}
-			if (rk >= -1) j1 = 1;
-			else          j1 = -rk;
-			if (r - 1 <= pk)  j2 = k - 1;
-			else              j2 = p - r;
-			for (j = j1; j <= j2; j++)
-			{
-				a[s2][k] = (a[s1][j] - a[s1][j-1]) / ndu[pk - 1][rk];
-				d = a[s2][j] * ndu[rk+j][pk];
-			}
-			if (r <= pk)
-			{
-				a[s2][k] = -a[s1][k -1] / ndu[pk + 1][r];
-				d = a[s2][k] * ndu[r][pk];
-			}
-			ders[k][r] = d;
-			j = s1;
-			s1 = s2;
-			s2 = j;
-
-		}
-		r = p;
-		for (int k = 1; k <= knots; k++)
-		{
-			for (j = 0; j <= p; j++)
-				r *= (p - k);
-		}
-
-	}
-}
 //计算点
 
 void Bspline::CurvePoint(const float u){  //得到outPoint
     float w = 0.0;
+	float N[100];
     point out;
     out.init();
     int i;
-	int span = FindSpan(0,knots-1, u);
-	BasisFuns(span, u);
+	int span = FindSpan(0,knots-1, u,U);
+	BasisFuns(span,u,degree,U,N);
     
 	for (i = 0; i <= degree; i++)
     {
@@ -146,62 +51,62 @@ void Bspline::CurvePoint(const float u){  //得到outPoint
 }
 
 
-void Bspline::RefineKnotVectCurve(int n, int p){
-	/*节点细化，根据插入的X[]向量*/
-	int j;
-	int m = n + p + 1;
-	
-	int a = FindSpan(0, knots, X[0]);
-	int b = FindSpan(0, knots, X[Xknots]);
-	b = b + 1;
-	for (j = 0; j < a - p; j++)
-	{
-		Qw[j] = Pw[j];
-	
-	}
-	for (j = b - 1; j <= n; j++)
-	{
-		Qw[j + Xknots + 1] = Pw[j];
-		
-	} 
-	for (j = 0; j <= a; j++) Ubar[j] = U[j];
-	for (j = b + p; j <= m; j++) Ubar[j + Xknots + 1] = U[j];
-	int i = b + p - 1;
-	int k = b + p + Xknots;
-	for (j = Xknots; j >= 0; j--)
-	{
-		while (X[j] <= U[i] && i>a)
-		{
-			Qw[k - p - 1] = Pw[i - p - 1];
-			Ubar[k] = U[i];
-			k = k - 1;
-			i = i - 1;
-		}
-		Qw[k - p - 1] = Qw[k - p];
-		
-		for (j = Xknots; j >= 0; j--)
-		{
-			int ind = k - p + 1;
-			float alfa = Ubar[k + 1] - X[j];
-			if (abs(alfa) == 0)
-			{
-				Qw[ind - 1] = Qw[ind];
-			}
-
-				
-			else
-			{
-				alfa = alfa / (Ubar[k + 1] - U[i - p + 1]);
-				Qw[ind - 1] = Qw[ind - 1] * alfa + Qw[ind] * (1.0 - alfa) ;
-				
-			}
-		}
-		Ubar[k] = X[j];
-		k = k + 1;
-	}
-	/*细化后节点矢量Ubar和插入后控制点Qw*/
-    
-}
+//void Bspline::RefineKnotVectCurve(int n, int p){
+//	/*节点细化，根据插入的X[]向量*/
+//	int j;
+//	int m = n + p + 1;
+//	
+//	int a = FindSpan(0, knots, X[0]);
+//	int b = FindSpan(0, knots, X[Xknots]);
+//	b = b + 1;
+//	for (j = 0; j < a - p; j++)
+//	{
+//		Qw[j] = Pw[j];
+//	
+//	}
+//	for (j = b - 1; j <= n; j++)
+//	{
+//		Qw[j + Xknots + 1] = Pw[j];
+//		
+//	} 
+//	for (j = 0; j <= a; j++) Ubar[j] = U[j];
+//	for (j = b + p; j <= m; j++) Ubar[j + Xknots + 1] = U[j];
+//	int i = b + p - 1;
+//	int k = b + p + Xknots;
+//	for (j = Xknots; j >= 0; j--)
+//	{
+//		while (X[j] <= U[i] && i>a)
+//		{
+//			Qw[k - p - 1] = Pw[i - p - 1];
+//			Ubar[k] = U[i];
+//			k = k - 1;
+//			i = i - 1;
+//		}
+//		Qw[k - p - 1] = Qw[k - p];
+//		
+//		for (j = Xknots; j >= 0; j--)
+//		{
+//			int ind = k - p + 1;
+//			float alfa = Ubar[k + 1] - X[j];
+//			if (abs(alfa) == 0)
+//			{
+//				Qw[ind - 1] = Qw[ind];
+//			}
+//
+//				
+//			else
+//			{
+//				alfa = alfa / (Ubar[k + 1] - U[i - p + 1]);
+//				Qw[ind - 1] = Qw[ind - 1] * alfa + Qw[ind] * (1.0 - alfa) ;
+//				
+//			}
+//		}
+//		Ubar[k] = X[j];
+//		k = k + 1;
+//	}
+//	/*细化后节点矢量Ubar和插入后控制点Qw*/
+//    
+//}
 
 
 void Bspline::output(){

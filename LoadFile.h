@@ -1,6 +1,12 @@
 #pragma once
 
+#include <vector>
 #include <qfile.h>
+
+
+
+#include "basis.h"
+
 
 class LoadFile
 {

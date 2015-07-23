@@ -1,6 +1,4 @@
-#include <iostream>
-using namespace std;
-
+#pragma once
 
 /*定义通用数据类型  */
 typedef int INDEX;   
@@ -20,6 +18,7 @@ struct point     //普通点
 		 y,
 		 z;
 	void init() { this->x = 0.0; this->y = 0.0; this->z = 0.0; }
+	void init(cpoint p){ this->x = p.x; this->y = p.y; this->z = p.z; }
 	template<typename T>
 	inline point & operator * (const T &p)
 	{   //重载*运算，进行point和其他的乘法运算，使用形式如 point*p point类型在前;
@@ -50,6 +49,27 @@ struct point     //普通点
 		q->z = this->z + p.z;   //*this->w
 		return *q;
 	}
+	inline point & operator - (const point &p)
+	{
+		//重载+运算，进行两个point相加
+		point *q;
+		q = new point;
+		q->x = this->x - p.x;
+		q->y = this->y - p.y;
+		q->z = this->z - p.z;   //*this->w
+		return *q;
+	}
+	inline point & operator + (const float &p)
+	{
+		//重载+运算，进行两个point相加
+		point *q;
+		q = new point;
+		q->x = this->x + p;
+		q->y = this->y + p;
+		q->z = this->z + p;   //*this->w
+		return *q;
+	}
+	
 };
 
 
