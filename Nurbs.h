@@ -1,6 +1,8 @@
-
+#include <iostream>
+using namespace std;
 
 #include "LoadFile.h"
+#include "basis.h"
 
 using std::vector;
 

@@ -3,7 +3,7 @@
 
 #include <QGLWidget>
 #include "bspline.h"
-
+#include <string>
 
 //#include "bspline.h"
 #include "loadfilefor.h"
@@ -53,7 +53,7 @@ protected:
 
 private:
 	LoadFile *FileOpen;
-	string FileType;
+	std::string FileType;
     int xRot;
     int yRot;
     int zRot;

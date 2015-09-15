@@ -10,6 +10,7 @@
 
 #include "Nurbs-DS.h"
 
+
 /*************************第二章**********************************/
 /*算法2.1*/
 int FindSpan(int p, int n, float u, float U[]);
@@ -26,7 +27,6 @@ void OneBasisFuns(int p, int m, float U[], int i, float u, float Nip);
 /*算法2.5*/
 void DersOneBasisFuns(int p, int m, float U[], int i, float u, int n, float ders[]);
 
-
 /*************************第三章**********************************/
 /*算法3.2*/
 void CurveDerivsAlg1(int n, int p, float U[], point P[], float u, int d, point CK[]);
@@ -36,3 +36,10 @@ void CurveDerivCpts(int n, int p, float U[], point P[], int d, int r2, int r1, p
 
 /*算法3.4*/
 void CurveDerivsAlg2(int n, int p, float U[], point P[], float u, int d, point CK[]);
+
+/*算法3.5*/
+void SurfacePoint(int n, int p, float U[], int m, int q, float V[], point P[][3], float u, float v, point S);
+
+/*算法3.6*/
+void SurfaceDerivsAlg1(int n, int p, float U[], int m, int q, float V[], point P[][3], float u, float v, const int d, point SKL[][100]);
+

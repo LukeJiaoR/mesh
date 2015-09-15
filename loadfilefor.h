@@ -4,7 +4,7 @@
 
 #include <qfile.h>
 #include <QtOpenGL>
-
+#include <string>
 
 #include "LoadFile.h"
 

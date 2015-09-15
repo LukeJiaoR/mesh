@@ -3,8 +3,6 @@
 #include <vector>
 #include <qfile.h>
 
-
-
 #include "basis.h"
 
 

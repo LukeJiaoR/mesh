@@ -5,8 +5,8 @@
 
 
 #include "LoadFile.h"
-
-
+#include "Nurbs-DS.h"
+#include "basis.h"
 
 using std::vector;
 

@@ -1,10 +1,15 @@
 #include "Nurbs.h"
+#include "Nurbs-DS.h"
+#include "basis.h"
+
 
 
 Nurbs::Nurbs()
 {
 }
-
+Nurbs::~Nurbs()
+{
+}
 
 int choose(int m, int n)
 {
@@ -290,7 +295,7 @@ void CurvePoint(int n, int p,float U[],cpoint Pw[],const float u)
 		out.w = out.w + pw.w;           //ndu[i][degree] * Pi[span - degree + i].w;
 	}
 	point cwpoint;
-	cwpoint.init(out);  //Cw的矢值
+	cwpoint.copy(out);  //Cw的矢值
 	
 	cwpoint = cwpoint / out.w;  // 用于画曲线的点
 

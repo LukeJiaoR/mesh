@@ -1,5 +1,5 @@
 #include <iostream>
-#include <mainwindow.h>
+#include "mainwindow.h"
 #include <GL/gl.h>
 
 #include "bspline.h"
