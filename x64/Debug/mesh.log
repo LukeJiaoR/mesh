@@ -1,6 +1,37 @@
-﻿生成启动时间为 2015/9/15 11:08:27。
+﻿生成启动时间为 2015/10/30 11:06:49。
      1>项目“F:\Document\gitHUB\mesh.vcxproj”在节点 2 上(Build 个目标)。
-     1>Link:
+     1>ClCompile:
+         D:\Visual Studio 2013\VC\bin\x86_amd64\CL.exe /c /ID:\Qt\Qt5.5.0\5.5\msvc2013_64\include /ID:\Qt\Qt5.5.0\5.5\msvc2013_64\include\QtOpenGL /ID:\Qt\Qt5.5.0\5.5\msvc2013_64\include\QtWidgets /ID:\Qt\Qt5.5.0\5.5\msvc2013_64\include\QtGui /ID:\Qt\Qt5.5.0\5.5\msvc2013_64\include\QtCore /Idebug /I"D:\Qt\Qt5.5.0\5.5\msvc2013_64\mkspecs\win32-msvc2013" /I.\GeneratedFiles /Zi /nologo /W3 /WX- /Od /D _WINDOWS /D UNICODE /D WIN32 /D WIN64 /D QT_OPENGL_LIB /D QT_WIDGETS_LIB /D QT_GUI_LIB /D QT_CORE_LIB /D QT_DLL /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt -Zm200 -w34100 -w34189 Debug\moc_glwidget.cpp Debug\moc_mainwindow.cpp "Nurbs-DS.h" bspline.cpp glwidget.cpp main.cpp mainwindow.cpp
+         moc_glwidget.cpp
+     1>f:\document\github\bspline.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+         moc_mainwindow.cpp
+     1>f:\document\github\bspline.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+         Nurbs-DS.h
+         bspline.cpp
+     1>bspline.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>f:\document\github\bspline.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>bspline.cpp(28): warning C4189: “subA”: 局部变量已初始化但不引用
+     1>bspline.cpp(153): warning C4189: “num”: 局部变量已初始化但不引用
+         glwidget.cpp
+     1>glwidget.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>f:\document\github\bspline.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+         main.cpp
+     1>f:\document\github\bspline.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+         mainwindow.cpp
+     1>f:\document\github\bspline.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+         正在生成代码...
+       Link:
+         D:\Visual Studio 2013\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"debug\\mesh.exe" /NOLOGO /LIBPATH:D:\Qt\Qt5.5.0\5.5\msvc2013_64\lib /LIBPATH:lib_win64 lapack_win64_MT.lib blas_win64_MT.lib glu32.lib opengl32.lib gdi32.lib user32.lib D:\Qt\Qt5.5.0\5.5\msvc2013_64\lib\qtmaind.lib shell32.lib D:\Qt\Qt5.5.0\5.5\msvc2013_64\lib\Qt5Cored.lib D:\Qt\Qt5.5.0\5.5\msvc2013_64\lib\Qt5OpenGLd.lib D:\Qt\Qt5.5.0\5.5\msvc2013_64\lib\Qt5Widgetsd.lib D:\Qt\Qt5.5.0\5.5\msvc2013_64\lib\Qt5Guid.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"debug\mesh.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /MACHINE:X64 "/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" x64\Debug\basis.obj
+         x64\Debug\bspline.obj
+         x64\Debug\moc_glwidget.obj
+         x64\Debug\moc_mainwindow.obj
+         x64\Debug\glwidget.obj
+         x64\Debug\LoadFile.obj
+         x64\Debug\loadfilefor.obj
+         x64\Debug\main.obj
+         x64\Debug\mainwindow.obj
+         "x64\Debug\Nurbs-DS.obj"
+         x64\Debug\Nurbs.obj
          mesh.vcxproj -> F:\Document\gitHUB\debug\mesh.exe
        PostBuildEvent:
          copy lib_win64\*.dll debug\
@@ -12,4 +43,4 @@
 
 生成成功。
 
-已用时间 00:00:00.08
+已用时间 00:00:19.14

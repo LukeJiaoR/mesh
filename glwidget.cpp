@@ -23,6 +23,8 @@ GLWidget::GLWidget(QWidget *parent)
 }
 GLWidget::~GLWidget()
 {
+	delete FileOpen;
+	FileOpen = nullptr;
 }
 QSize GLWidget::minimumSizeHint() const
 {
@@ -191,21 +193,21 @@ void GLWidget::resizeGL(int width, int height)
 
 int* GLWidget::NewMesh(QString fileName)
 {
-	
+	int *size;
+	size = new int[2];
     if(fileName.section(".",-1,-1)=="nrb"){     //判断曲线NURBS文件nrb
        FileType = "nrb";
-       std::cout <<2<<std::endl;
 	   FileOpen = new Bspline();
        if (!fileName.isEmpty())
        {
 		   FileOpen->Load(fileName);
            updateGL();
        }
-       int *size;
-       size = new int [2];
+	   /*int *size;
+	   size = new int[2];
 	   size[0] = FileOpen->sizex();
 	   size[1] = FileOpen->sizey();
-       return size;
+	   return size;*/
     }
     if(fileName.section(".",-1,-1)=="ply"){       //判断网格mesh文件ply
         FileOpen = new LoadFileFOr();
@@ -214,12 +216,17 @@ int* GLWidget::NewMesh(QString fileName)
             FileOpen->Load(fileName);
             updateGL();
         }
-        int *size;
-        size = new int [2];
-        size[0]=FileOpen->sizex();
-        size[1]=FileOpen->sizey();
-        return size;   //返回需要填入UI的信息
+		//int *size;
+		//size = new int [2];
+		//size[0] = FileOpen->sizex();
+		//size[1] = FileOpen->sizey();
+		//return size;   //返回需要填入UI的信息
     } 
+
+	size[0] = FileOpen->sizex();
+	size[1] = FileOpen->sizey();
+	return size;
+
 
 }
 void GLWidget::mousePressEvent(QMouseEvent *event)

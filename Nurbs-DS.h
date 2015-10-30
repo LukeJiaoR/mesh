@@ -57,6 +57,13 @@ struct point     //ÆÕÍ¨µã
 	REAL x,
 		 y,
 		 z;
+	point(){ };
+	point(float a, float b, float c)
+	{
+		this->x = a;
+		this->y = b;
+		this->z = c;
+	}
 	void init() { this->x = 0.0; this->y = 0.0; this->z = 0.0; }
 	void copy(cpoint p){ this->x = p.x; this->y = p.y; this->z = p.z; }
 	template<typename T>

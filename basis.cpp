@@ -1,7 +1,13 @@
 #include "basis.h"
+
 #include <armadillo>
 #include <math.h>
 #include <iostream>
+#include <vector>
+
+
+
+
 using namespace std;
 using namespace arma;
 
@@ -18,14 +24,14 @@ inline int isMax(int a, int b)
 	return a > b ? a : b;
 }
 
-int FindSpan(int n, int p, float u, float U[])
+int FindSpan(int n, int p, float u, vector<float> U)
 {
 	/*
 	定位变量所在的节点向量区间
 	*/
 	int low, high, mid;
 	if (u >= U[n]) // savety >= check
-		return n - p;
+		return n - p ;
 	low = p;
 	high = n;
 	mid = (low + high) / 2;
@@ -47,13 +53,13 @@ int FindSpan(int n, int p, float u, float U[])
 
 }
 
-int FindSpan(int n, int p, float u, fmat &U)
+int FindSpan(int n, int p, float u, mat &U)
 {
 	int low, high, mid;
 	if (u >= U(n)) // savety >= check
 		return n - p;
 	low = p;
-	high = n;
+	high = n+1;
 	mid = (low + high) / 2;
 	while (u < U(mid) || u >= U(mid + 1))
 	{
@@ -72,88 +78,103 @@ int FindSpan(int n, int p, float u, fmat &U)
 	return mid;
 }
 
-void BasisFuns(int i, float u, int p, float U[], float N[])
+void BasisFuns(int i, float u, int p, vector<float> U, vector<float>& N)
 {
-	float left[NUM], right[NUM];
-	N[0] = 1.0;
-
+	//float left[NUM], right[NUM];
+	vector<float> left, right;
+	left.push_back(0.0);
+	right.push_back(0.0);
+	N.push_back(1.0);
+	vector<float>::iterator cerr = N.begin();
 	for (int j = 1; j <= p; j++)
 	{
 		float temp;
-		left[j] = u - U[i + 1 - j];
-		right[j] = U[i + j] - u;
+		left.push_back( u - U[i + 1 - j]);
+		right.push_back(  U[i + j] - u);
 		float saved = 0.0;
 		for (int r = 0; r < j; r++)
 		{
-
+			/*vector<float>::iterator cerr1 = cerr;
+			temp = *cerr / (right[r + 1] + left[j - r]);
+			*cerr = saved + right[r + 1] * temp;
+			saved = left[j - r] * temp;
+			cerr1++;*/
 			temp = N[r] / (right[r + 1] + left[j - r]);
 			N[r] = saved + right[r + 1] * temp;
 			saved = left[j - r] * temp;
 		}
-		N[j] = saved;
+		//std::cout << " N[" << j << "]:" << temp << " " << endl;
+
+		N.push_back(saved);
 	}
 }
 
-void BasisFuns(int i, float u, int p, float U[], float ndu[][NUM])
-{
-	int j, r;
-	float left[NUM], right[NUM];
-	ndu[0][0] = 1.0;
+//void BasisFuns(int i, float u, int p, vector<float> U, vector<vector<float>> ndu)
+//{
+//	int j, r;
+//	float left[NUM], right[NUM];
+//	ndu[0][0] = 1.0;
+//
+//	for (j = 1; j <= p; j++)
+//	{
+//		float temp;
+//		left[j] = u - U[i + 1 - j];
+//		right[j] = U[i + j] - u;
+//		float saved = 0.0;
+//		for (r = 0; r < j; r++)
+//		{
+//			ndu[j][r] = right[r + 1] + left[j - r];
+//			temp = ndu[r][j - 1] / ndu[j][r];
+//			ndu[r][j] = saved + right[r + 1] * temp;
+//			saved = left[j - r] * temp;
+//		}
+//		ndu[0][j] = saved;
+//	}
+//}
 
-	for (j = 1; j <= p; j++)
-	{
-		float temp;
-		left[j] = u - U[i + 1 - j];
-		right[j] = U[i + j] - u;
-		float saved = 0.0;
-		for (r = 0; r < j; r++)
-		{
-			ndu[j][r] = right[r + 1] + left[j - r];
-			temp = ndu[r][j - 1] / ndu[j][r];
-			ndu[r][j] = saved + right[r + 1] * temp;
-			saved = left[j - r] * temp;
-		}
-		ndu[j][j] = saved;
-	}
-}
+//void BasisFuns(int i, float u, int p, vector<float> U, fmat &N)
+//{
+//	vector<float> left, right;
+//	left.push_back(0.0);
+//	right.push_back(0.0);
+//	N(0,0) = 1.0;
+//
+//	for (int j = 1; j <= p; j++)
+//	{
+//		float temp;
+//		left.push_back( u - U[i + 1 - j]);
+//		right.push_back(  U[i + j] - u);
+//		float saved = 0.0;
+//		for (int r = 0; r < j; r++)
+//		{
+//
+//			temp = N(0,r) / (right[r + 1] + left[j - r]);
+//			N(0,r) = saved + right[r + 1] * temp;
+//			saved = left[j - r] * temp;
+//		}
+//		N(0,j) = saved;
+//	}
+//}
 
-void BasisFuns(int i, float u, int p, float U[], fmat &N)
-{
-	float left[NUM], right[NUM];
-	N(0,0) = 1.0;
-
-	for (int j = 1; j <= p; j++)
-	{
-		float temp;
-		left[j] = u - U[i + 1 - j];
-		right[j] = U[i + j] - u;
-		float saved = 0.0;
-		for (int r = 0; r < j; r++)
-		{
-
-			temp = N(0,r) / (right[r + 1] + left[j - r]);
-			N(0,r) = saved + right[r + 1] * temp;
-			saved = left[j - r] * temp;
-		}
-		N(0,j) = saved;
-	}
-}
-
-void DersBasisFuns(int i, float u, int p, int n, float U[], float ders[][NUM])
+void DersBasisFuns(int i, float u, int p, int n, vector<float> U, vector<vector<float> >& ders)
 {
 	/*
 	计算基函数的值以及n阶导数
 	*/
 	int j, r;
-	float ndu[NUM][NUM];
-	float left[NUM], right[NUM];
-	ndu[0][0] = 1.0;
+	vector<vector<float> > ndu(p+1);
+	vector<float> left, right;
+	left.push_back(0.0);
+	right.push_back(0.0);
+	ndu[0].push_back(1.0);
+
+	cout << "here" << endl;
 
 	for (j = 1; j <= p; j++)
 	{
 		float temp;
-		left[j] = u - U[i + 1 - j];
-		right[j] = U[i + j] - u;
+		left.push_back(u - U[i + 1 - j]);
+		right.push_back(U[i + j] - u);
 		float saved = 0.0;
 		for (r = 0; r < j; r++)
 		{
@@ -162,17 +183,19 @@ void DersBasisFuns(int i, float u, int p, int n, float U[], float ders[][NUM])
 			ndu[r][j] = saved + right[r + 1] * temp;
 			saved = left[j - r] * temp;
 		}
-		ndu[j][j] = saved;
+		ndu[j].push_back(saved);
 	}
 	for (j = 0; j <= p; j++)
 	{
-		ders[0][j] = ndu[j][p];
+		ders[0].push_back(ndu[j][p]);
 	}
 	for (r = 0; r <= p; r++)
 	{
 		int s1 = 0, s2 = 1;
-		float a[100][100] = { 0 };
-		a[0][0] = 1.0;
+		vector<vector<float>> a(2);
+		for (int i = 0; i < 3; i++)
+			a[i].resize(p+1);
+		a[0].push_back(1.0);
 		for (int k = 1; k <= n; k++)
 		{
 			float d = 0.0;
@@ -198,28 +221,26 @@ void DersBasisFuns(int i, float u, int p, int n, float U[], float ders[][NUM])
 				a[s2][k] = -a[s1][k - 1] / ndu[pk + 1][r];
 				d = a[s2][k] * ndu[r][pk];
 			}
-			ders[k][r] = d;
-			j = s1;
-			s1 = s2;
-			s2 = j;
-
-		}
-		r = p;
-		for (int k = 1; k <= n; k++)
-		{
-			for (j = 0; j <= p; j++)
-				r *= (p - k);
-		}
-
+			ders[k].push_back(d);
+			j = s1;    s1 = s2;   s2 = j;
+		}	
+	}
+	r = p;
+    for (int k = 1; k <= n; k++)
+	{
+		for (j = 0; j <= p; j++)
+			ders[k][j] *= r;
+		r *= (p - k);
 	}
 }
 
-void OneBasisFuns(int p, int m, float U[], int i, float u, float Nip)
+float OneBasisFuns(int p, int m, vector<float> U, int i, float u)
 {
 	/*
 	单个基函数计算
 	*/
-	float N[NUM];
+	float Nip;
+	vector<float> N;
 	float saved,
 		Uleft,
 		Uright,
@@ -227,17 +248,17 @@ void OneBasisFuns(int p, int m, float U[], int i, float u, float Nip)
 	if ((i == 0 && u == U[0]) ||
 		(i == m - p - 1 && u == U[m]))
 	{
-		Nip = 1.0; return;
+		Nip = 1.0; return Nip;
 	}
 	if (u < U[i] || u >= U[i + p + 1])
 	{
-		Nip = 0.0; return;
+		Nip = 0.0; return Nip;
 	}
-	for (int j = 0; j < p; j++)
+	for (int j = 0; j <= p; j++)
 	{
 		if (u > U[i + j] && u < U[i + j + 1])
-			N[j] = 1.0;
-		else N[j] = 0.0;
+			N.push_back(1.0);
+		else N.push_back(0.0);
 	}
 	for (int k = 1; k <= p; k++)
 	{
@@ -262,15 +283,18 @@ void OneBasisFuns(int p, int m, float U[], int i, float u, float Nip)
 		}
 	}
 	Nip = N[0];
+
+	return Nip;
+	
 }
 
-void DersOneBasisFuns(int p, int m, float U[], int i, float u, int n, float ders[])
+void DersOneBasisFuns(int p, int m, vector<float> U, int i, float u, int n, vector<float>& ders)
 {
 	/*
 	单个基函数的k阶导数。分别存储在ders[k].
 	*/
-	float N[NUM][NUM],
-		ND[NUM];
+	vector<float> ND;
+	vector<vector<float>> N(p+1);
 	float saved,
 		Uleft,
 		Uright,
@@ -278,13 +302,13 @@ void DersOneBasisFuns(int p, int m, float U[], int i, float u, int n, float ders
 
 	if (u < U[i] || u >= U[i + p + 1])
 	{
-		ders[0] = 0.0; return;
+		ders.push_back(0.0); return;
 	}
 	for (int j = 0; j < p; j++)
 	{
 		if (u > U[i + j] && u < U[i + j + 1])
-			N[j][0] = 1.0;
-		else N[j][0] = 0.0;
+			N[j].push_back(1.0);
+		else N[j].push_back(0.0);
 	}
 	for (int k = 1; k <= p; k++)
 	{
@@ -297,22 +321,22 @@ void DersOneBasisFuns(int p, int m, float U[], int i, float u, int n, float ders
 			Uright = U[i + j + k + 1];
 			if (N[j + 1][k + 1] == 0.0)
 			{
-				N[j][k] = saved;
+				N[j].push_back(saved);
 				saved = 0.0;
 			}
 			else
 			{
 				temp = N[j + 1][k - 1] / (Uright - Uleft);
-				N[j][k] = saved + (Uright - u) * temp;
+				N[j].push_back( saved + (Uright - u) * temp);
 				saved = (u - Uleft) * temp;
 			}
 		}
 	}
-	ders[0] = N[0][p];
+	ders.push_back(N[0][p]);
 	for (int k = 1; k <= n; k++)
 	{
 		for (int j = 0; j <= k; j++)
-			ND[j] = N[j][p - k];
+			ND.push_back(N[j][p - k]);
 		for (int jj = 1; jj <= k; jj++)
 		{
 			if (ND[0] == 0.0) saved = 0.0;
@@ -334,12 +358,48 @@ void DersOneBasisFuns(int p, int m, float U[], int i, float u, int n, float ders
 				}
 			}
 		}
-		ders[k] = ND[0];
+		ders.push_back(ND[0]);
 	}
 }
 
+
+/*算法3.1 B样条曲线点*/
+point BSplineCurvePoint(int n,    //控制点的最大下标	
+				int p,            //曲线次数
+				vector<float> U,   //节点向量
+				vector<point> P,   //控制点，存储在vector中
+				float u
+				)
+{  //得到outPoint
+	//float w = 0.0;
+	vector<float> N;
+	point *out;
+	out = new point();
+	out->init();
+	
+	int i;
+	int span = FindSpan(n, p, u, U);
+	BasisFuns(span, u, p, U, N);
+
+	
+	for (i = 0; i <= p; i++)
+	{
+		*out = *out + P[span - p + i] * N[i];
+	}
+
+	return *out;    //返回求出的点
+
+}
+
 /*算法3.2*/
-void CurveDerivsAlgl(int n, int p, float U[], point P[], float u, int d, point CK[])
+void CurveDerivsAlgl(int n,	//控制点的最大下标	
+					 int p,  //曲线次数
+					 vector<float> U, //节点向量
+					 point P[],   //控制点
+					 float u,     //取的参数
+					 int d,    //算的阶数
+					 vector<point> CK     //输出
+					 )
 {
 	/*计算曲线上的导矢
 	n:控制点的最大坐标
@@ -348,26 +408,30 @@ void CurveDerivsAlgl(int n, int p, float U[], point P[], float u, int d, point C
 	P:控制点数组
 	CK[]:输出.CK[k]返回k阶导矢
 	*/
-	float nders[NUM][NUM];
+	//float nders[NUM][NUM];
+	vector<vector<float>> nders;
 	int du = min(d, p);
-	for (int k = p+1; k <= d; k++)
-	{
-		CK[k].init();
-	}
+	point temp;  temp.init();
 	int span = FindSpan(n, p, u, U);
 	DersBasisFuns(span, u, p, du, U, nders);
 	for (int k = 0; k <= du; k++)
 	{
-		CK[k].init();
+		temp.init();
+		CK.push_back(temp);
 		for (int j = 0; j <= p; j++)
 		{
 			CK[k] = CK[k] + P[span - p + j] * nders[k][j];
 		}
 	}
+	for (int k = p+1; k <= d; k++)
+		{
+			temp.init();
+			CK.push_back(temp);
+		}
 }
 
 /*算法3.3*/
-void CurveDerivCpts(int n, int p, float U[], point P[], int d, int r2, int r1, point PK[][100])
+void CurveDerivCpts(int n, int p, vector<float> U, point P[], int d, int r2, int r1, point PK[][100])
 {
 	/*计算导曲线的控制点
 	*/
@@ -387,12 +451,13 @@ void CurveDerivCpts(int n, int p, float U[], point P[], int d, int r2, int r1, p
 }
 
 /*算法3.4*/
-void CurveDerivsAlg2(int n, int p, float U[], point P[], float u, int d, point CK[])
+void CurveDerivsAlg2(int n, int p, vector<float> U, point P[], float u, int d, point CK[])
 {
 	/*
 	计算B样条曲线上的点及直到d阶导矢
 	*/
-	float N[NUM][NUM];
+	//float N[NUM][NUM];
+	vector<vector<float>> N;
     point PK[NUM][NUM];
 	int du = min(d, p);
 	for (int k = p + 1; k <= du; k++)
@@ -415,13 +480,12 @@ void CurveDerivsAlg2(int n, int p, float U[], point P[], float u, int d, point C
 
 
 /*算法3.4*/
-void SurfacePoint(int n, int p, float U[], int m, int q, float V[], point P[][3], float u, float v, point S)
+void BSplineSurfacePoint(int n, int p, vector<float> U, int m, int q, vector<float> V, point P[][3], float u, float v, point S)
 {
 	/*计算B样条曲面上的点*/
 	/*输入*/
 	/*输出 S*/
-	float Nu[] = {0},
-		  Nv[] = {0};
+	vector<float> Nu,Nv;
 	int uspan = FindSpan(n, p, u, U);
 	BasisFuns(uspan, u, p, U, Nu);
 	int vspan = FindSpan(n, p, u, V);
@@ -443,13 +507,12 @@ void SurfacePoint(int n, int p, float U[], int m, int q, float V[], point P[][3]
 
 
 /*算法3.6*/
-void SurfaceDerivsAlg1(int n, int p, float U[], int m, int q, float V[], point P[][3], float u, float v,const int d, point SKL[][NUM])
+void SurfaceDerivsAlg1(int n, int p, vector<float> U, int m, int q, vector<float> V, point P[][3], float u, float v, const int d, point SKL[][NUM])
 {
 	/*计算曲面导数*/
 	/*输入：*/
 	/*输出：数组SKL*/
-	float Nu[][NUM] = { 0 },
-		  Nv[][NUM] = { 0 };
+	vector<vector<float>> Nu(p+1), Nv(p+1);
 	int du = min(d, p);
 	for (int k = p+1; k <=d; k++)
 	{
@@ -470,12 +533,14 @@ void SurfaceDerivsAlg1(int n, int p, float U[], int m, int q, float V[], point P
 	DersBasisFuns(uspan, u, p, du, U, Nu);
 	int vspan = FindSpan(m, q, v, V);
 	DersBasisFuns(vspan, v, q, dv, V, Nv);
-	point temp[] = { 0 };
+	point t;
+	vector<point> temp;
 	for (int k = 0; k <= du; k++)
 	{
 		for (int s = 0; s <= q; s++)
 		{
-			temp[s].init();
+			t.init();
+			temp.push_back(t);
 			for (int r = 0; r <= p; r++)
 			{
 				temp[s] = temp[s] +  P[uspan - p + r][vspan] * Nu[k][r] ;
@@ -578,54 +643,67 @@ bool SurfMeshParams(int n, int m, point Q[][NUM], float uk[], float vl[])
 }
 
 //将A[a][]存入B[][]的第b行,有c个元素；
-void MartixValue(float  A[][NUM], int a, fmat &B, int b,int c)
+void MartixValue(vector<vector<float>> A, int a, mat &B, int b,int c)
 {
-	for (int i; i < c; i++)
+	for (int i = 0; i < c; i++)
 	{
 		B(b,i) = A[a][i];
 	}
 }
 
-/*参数化数据点。未完善，需要修改*/
-bool Getub(point Q[], int n, float ub[])
+/*参数化数据点*/
+void Getub(vector<point> Q, int r, vector<float>& ub)
 {
-	ub[0] = 0.0;
+	ub.push_back(0.0);
+	vector<float>::iterator cerr = ub.begin();
 	float d = 0.0;
-	for (int i = 0; i < n - 1; i++)
-		d = d + Distance3D(Q[i], Q[i + 1]);
-	for (int i = 1; i < n - 1; i++)
+	for (int i = 1; i <= r; i++)
 	{
-		ub[i] = ub[i - 1] + Distance3D(Q[i], Q[i - 1]) / d;
+		d = d + Distance3D(Q[i], Q[i - 1]);
 	}
-	ub[n - 1] = 1;
 
-	return true;
+	/*计算ub[i]放入ub中*/
+	for (int i = 1  ; i <= r ; i++,cerr++)
+	{
+		//ub[i] = ub[i - 1] + Distance3D(Q[i], Q[i - 1]) / d;
+		//cout << " ub[" << i-1 << "]:" << ub[i - 1] << endl;
+		//float temp = ub[i-1]+ Distance3D(Q[i], Q[i - 1]) / d  ;
+		//cout << " ub[" << i << "]:" << temp << endl;
+		ub.push_back(ub[i - 1] + Distance3D(Q[i], Q[i - 1]) / d);
+	}
+	//ub.push_back(1.0);
 }
 
-void GetU(int m, int n, int p, float ub[], float U[])
+void GetU(int m, int n, int p, vector<float> ub, vector<float>& U)
 {
-	float d = (m + 1) / (n - p + 1);
-	
-	for (int j = 0; j < n-p; j++)
+	float d = static_cast<float>(m + 1) / (n - p + 1);
+	for (int i = 0; i <= p; i++)  U.push_back(0);
+	for (int j = 1; j <= n-p; j++)
 	{
 		int i = (int)(j*d);
 		float a = j*d - i;
-		U[p + j] = (1.0 - a)*ub[i - 1] + a*ub[i];
+		U.push_back((1.0 - a)*ub[i - 1] + a*ub[i]);
+	}
+	for (int i = 0; i <= p; i++)
+	{
+		U.push_back(1);
 	}
 }
+
+
 /*算法9.6*/
-bool WCLeastSquaresCureve(point Q[], int r,     //Q[]存储拟合的数据点Q的个数为r+1
+bool WCLeastSquaresCureve(vector<point> Q, int r,     //Q[]存储拟合的数据点Q的个数为r+1
 						  float Wq[],           //>0 是非约束点,<0是约束点 ，大小 r+1
-						  point D[], int s, int I[],       // D[]存储导矢。导矢个数为s+1，s = -1表示没有导矢,I[]存储对应第k个导矢对应的点在Q中的下标
+						  vector<point> D, int s, int I[],       // D[]存储导矢。导矢个数为s+1，s = -1表示没有导矢,I[]存储对应第k个导矢对应的点在Q中的下标
 						  float Wd[],           //标明D[]中导矢的约束性。
-						  int n,                //预备用n个控制点来拟合
+						  int n,                //预备用n+1个控制点来拟合
 						  int p,                //拟合曲线为p次
-						  float U[], cpoint P[]   //输出的节点向量U和控制点p.
+						  vector<float>& U, vector<cpoint>& P   //输出的节点向量U和控制点p.
 						  )
 {
 	int ru = -1, rc = -1;
-	float 
-		funs[2][NUM] = { 0 }
+	vector<vector<float> >
+		funs(2);
 		/*N[][NUM] = {0},
 		M[][NUM] = {0}*/
 		;
@@ -639,6 +717,7 @@ bool WCLeastSquaresCureve(point Q[], int r,     //Q[]存储拟合的数据点Q的个数为r+
 
 	for (int i = 0; i <= r; i++)
 	{
+
 		if (Wq[i] > 0.0) ru = ru + 1; // Wq[]大小为r+1，所以有r+1 = rc+ru;
 		else rc = rc + 1;
 	}
@@ -650,43 +729,61 @@ bool WCLeastSquaresCureve(point Q[], int r,     //Q[]存储拟合的数据点Q的个数为r+
 	}
 	int mu = ru + su + 1;   
 	int mc = rc + sc + 1; 
-	fmat N(mu + 1, n + 1),         //N =[ NDip(uk)] 第i个基函数或它的一阶导数在uk处的值
+	mat N(mu + 1, n + 1),         //N =[ NDip(uk)] 第i个基函数或它的一阶导数在uk处的值
 		M(mc + 1, n + 1),
 		S(mu + 1, 3),      //非约束数据项
 		T(mc + 1, 3),      //约束数据项目 
 		W(mu + 1,mu+1)     //权值 对角矩阵
 		;
-
+	N.fill(0.0); M.fill(0.0); S.fill(0.0); T.fill(0.0); W.fill(0.0);
+	//W.save("W.txt", raw_ascii);
+	std::cout << " before 1" << endl;
 	
 	if ( mc >= n || mc + n >= mu + 1)
 	{
 		return false;//返回错误
 	}
-	float ub[] = {0};
+	vector<float> ub;
+	std::cout << " before 2" << endl;
 	//(9.5式)计算，存入ub[]
-	if(!Getub(Q, n, ub)) return false;
+	Getub(Q, n, ub);
 	//9.68,9.69 存入U[]
+	vector<float>::iterator cerr;
+	for (cerr = ub.begin(); cerr != ub.end(); cerr++)
+	{
+		cout << *cerr << " ";
+	}
+	cout << endl;
 	GetU(r, n, p, ub, U);
-
+	for (cerr = U.begin(); cerr != U.end(); cerr++)
+	{
+		cout << *cerr << " ";
+	}
+	cout << endl;
+	std::cout << " before 3" << endl;
 	int j = 0;
 	int mu2 = 0, mc2 = 0;
-	for (int i =0; i <= r; i++)
+	int i;
+	for (cerr = ub.begin(),i = 0; i <= r; i++,cerr++)
 	{
-		int span = FindSpan(n, p, ub[i], U);
+		int span = FindSpan(n, p, *cerr, U);
 		int dflag = 0;
 		if (j <= s)
-		{
-			if (i==I[j])
+		{ 
+			if (i == I[j])
 			{
 				dflag = 1;
 			}
 		}
-		if (0 == dflag)  BasisFuns(span, ub[i], p, U, funs);
-		else DersBasisFuns(span, ub[i], p, 1, U, funs);
-		if (Wq[i]>0.0)
+		if (0 == dflag)  BasisFuns(span, *cerr, p, U, funs[0]);
+		else DersBasisFuns(span, *cerr, p, 1, U, funs);
+		cout << "here" << endl;
+		if (Wq[i] > 0.0)
 		{
+			std::cout << "Wq[i] > 0.0" << endl;
 			W(mu2,mu2) = Wq[i];
 			//将funs[0][]存入N[][]的第mc2行；
+			
 			MartixValue(funs, 0, N, mc2, n + 1);
 			S(mu2, 0) = Q[i].x * W(mu2);
 			S(mu2, 1) = Q[i].y * W(mu2);
@@ -695,21 +792,25 @@ bool WCLeastSquaresCureve(point Q[], int r,     //Q[]存储拟合的数据点Q的个数为r+
 		}
 		else
 		{
+			std::cout << "else Wq[i] > 0.0" << endl;
 			/*约束点*/
-			//将funs[0][]存在M[][]的第mc2行
+			//将funs[0][]存在M[mc2][]
 			MartixValue(funs, 0, M, mc2, n + 1);
 			T(mc2, 0) = Q[i].x ;
 			T(mc2, 1) = Q[i].y ;
 			T(mc2, 2) = Q[i].z ;
 			mc2 = mc2 + 1;
 		}
+		std::cout <<  " before 1 == dflag" << endl;
 		if (1 == dflag)
 		{
+			std::cout << "1 == dflag" << endl;
 			/*处理这一点的导矢*/
 			if (Wd[j] > 0.0)
 			{
+				std::cout << "Wd[j] > 0.0" << endl;
 				W(mu2, mu2) = Wd[i];
-				//将funs[1][]存入N[][]的第mu2行
+				//将funs[1][]存入N[mu2][]
 				MartixValue(funs, 1, N, mc2, n + 1);
 				S(mu2, 0) = D[i].x * W(mu2);
 				S(mu2, 1) = D[i].y * W(mu2);
@@ -718,8 +819,9 @@ bool WCLeastSquaresCureve(point Q[], int r,     //Q[]存储拟合的数据点Q的个数为r+
 			}
 			else
 			{
+				std::cout << "else Wd[j] > 0.0" << endl;
 				/*约束导矢*/
-				//将funs[1][]存入M[][]第mu2行
+				//将funs[1][]存入M[mu2][]
 				MartixValue(funs, 1, M, mc2, n + 1);
 				T(mc2, 0) = D[i].x;
 				T(mc2, 1) = D[i].y;
@@ -730,47 +832,122 @@ bool WCLeastSquaresCureve(point Q[], int r,     //Q[]存储拟合的数据点Q的个数为r+
 		}
 	}/*for循环结束*/
 	//计算N*WN和N*WS；
-	fmat NWN = det(N)*W*N;
-	fmat NWS = det(N)*W*S;
+	W.save("W.txt", raw_ascii);
+
+	std::cout << " before 4" << endl;
+	mat NWN = N.t()*W*N;
+	mat NWS = N.t()*W*S;
 	
+	cout << det(NWN) << endl;
+	NWN.save("NWN.txt", raw_ascii);
 	//LUDecomposition(N*WN,n+1,p);
 	if (mc < 0)
 	{
 		/*无约束*/
 		/*此时(9.71)式简化成（N*WN）P = N*WS*/
 		//用FowardBackward()求解控制点P[];
-		fmat CPo = solve(NWN, NWS); //inv(NWN)*NWS;  
+		cout << NWN.n_rows << " " << NWS.n_rows << endl;
+		mat CPo = arma::solve(NWN, NWS); //inv(NWN)*NWS;  
 		//CPo.print("最终数据点:");
 		//将p填入到P[]中;
 		for (int i = 0; i < n+1; i++)
 		{
-			P[i].x = CPo(i, 0);
-			P[i].y = CPo(i, 1);
-			P[i].z = CPo(i, 2);
+			cpoint out;
+
+			out.x = CPo(i, 0);
+			out.y = CPo(i, 1);
+			out.z = CPo(i, 2);
+			
+			P.push_back(out);
  		}
 		return true;
 	}
 	//用FowardBackward（）计算逆矩阵（N*WN）-1;
 	//进行矩阵运算得到 ： M(N*WN)-1M* 和 M(N*WN)-1(N*WS)-T
 	//求解（9.75）得到拉格朗日算子，将其存入A[];
-	fmat A = inv(M*inv(NWN)*M.t())*inv(M*inv(NWN)*NWS - T);
+	mat A = inv(M*inv(NWN)*M.t())*inv(M*inv(NWN)*NWS - T);
+	std::cout << " before 5" << endl;
 	/*然后计算P = （N*WN）-1((N*WS)-M*A)  (9.74)*/
-	fmat CPo = inv(NWN)*NWS - inv(NWN)*M.t()*A;
+	mat CPo = inv(NWN)*NWS - inv(NWN)*M.t()*A;
 	//CPo.print("最终数据点:");
 	//将p填入到P[]中
 	for (int i = 0; i < n + 1; i++)
 	{
-		P[i].x = CPo(i, 0);
-		P[i].y = CPo(i, 1);
-		P[i].z = CPo(i, 2);
-		
+		cpoint out;
+		out.x = CPo(i, 0);
+		out.y = CPo(i, 1);
+		out.z = CPo(i, 2);
+		P.push_back(out);
 	}
 	return true;
 }
 
 
 
-/*将半带宽为sbw的q * q矩阵分解为下三角矩阵和上三角矩阵。*/
-/*执行追赶法中向前和向后的代换，rhs用来存储系统的右端项*/
 
-
+bool BsplineApp(vector<point> Q, int r,     //Q[]存储拟合的数据点Q的个数为r+1
+	int n,                //预备用n+1个控制点来拟合
+	int p,                //拟合曲线为p次
+	vector<float>& U, vector<point>& P   //输出的节点向量U和控制点p.)
+	)
+{
+	vector<vector<float> >
+		funs(2);
+	mat N(r + 1, n + 1),         //N =[ NDip(uk)] 第i个基函数或它的一阶导数在uk处的值
+		M(r + 1, n + 1),
+		S(r + 1, 3),      //非约束数据项
+		T(r + 1, 3)      //约束数据项目 
+		//W(r + 1, r + 1)     //权值 对角矩阵
+		;
+	N.fill(0.0); M.fill(0.0); S.fill(0.0); T.fill(0.0); //W.fill(0.0);
+	vector<float> ub;
+	Getub(Q, r, ub);
+	//9.68,9.69 存入U[]
+	vector<float>::iterator cerr;
+	cout << " UB[] :" << endl;
+	for (cerr = ub.begin(); cerr != ub.end(); cerr++)
+	{
+		cout << *cerr << " ";
+	}
+	cout << endl;
+	GetU(r, n, p, ub, U);
+	cout << " U[] : " << endl;
+	for (cerr = U.begin(); cerr != U.end(); cerr++)
+	{
+		cout << *cerr << " ";
+	}
+	cout << sizeof(U) - 1;
+	cout << endl;
+	for (int i = 0; i <= r;i++)
+	{
+		for (int j = 0; j <= n;j++)
+		{
+			N(i, j)=OneBasisFuns(p, sizeof(U) - 1, U, i, ub[j] );
+			//cout << N(i, j) << endl;
+		}
+	}
+	
+	//N.save("N.txt", raw_ascii);
+	for (int i = 0; i < r+1; i++)
+	{
+		S(i, 0) = Q[i].x;
+		S(i, 1) = Q[i].y;
+		S(i, 2) = Q[i].z;
+	}
+	//S.save("S.txt", raw_ascii);
+	mat PO = solve(N, S);
+	PO.save("OUT.txt", raw_ascii);
+	cout << "Control Point : " << endl;
+	for (int i = 0; i < n + 1; i++)
+	{
+		point out;
+		out.x = PO(i, 0);
+		cout << PO(i, 0) << " ";
+		out.y = PO(i, 1);
+		cout << PO(i, 1) << " ";
+		out.z = PO(i, 2);
+		cout << PO(i, 2) << " ";
+		P.push_back(out);
+	}
+	return true;
+}

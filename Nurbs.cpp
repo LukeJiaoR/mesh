@@ -275,9 +275,9 @@ int choose(int m, int n)
 //	}
 //}
 
-void CurvePoint(int n, int p,float U[],cpoint Pw[],const float u)
+void CurvePoint(int n, int p,vector<float> U,cpoint Pw[],const float u)
 {  //µÃµ½outPoint  (cpoint C)
-	float N[100];
+	vector<float> N;;
 	cpoint out;
 	out.init();
 	int span = FindSpan(n, p, u, U);
