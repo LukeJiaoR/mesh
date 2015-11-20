@@ -142,7 +142,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="basis.cpp" />
     <ClCompile Include="bspline.cpp" />
     <ClCompile Include="Debug\moc_glwidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -161,7 +160,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="basis.h" />
     <ClInclude Include="bspline.h" />
     <CustomBuild Include="glwidget.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal

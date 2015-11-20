@@ -84,7 +84,7 @@ bool GLWidget::changepos0(double x, double y)
 	updateGL();
 	return 1;
 }
-bool GLWidget::scalingtheMesh(float x)  //ç¼©æ”¾
+bool GLWidget::scalingtheMesh(float x)  //Ëõ·Å
 { 
 	if (scaling == 0 && x < 0)   return 0;
     scaling += x/2.0;
@@ -107,21 +107,21 @@ void GLWidget::initializeGL()
 
 
 
-   //glEnable(GL_BLEND);                             //æ··è‰²
+   //glEnable(GL_BLEND);                             //»ìÉ«
   /*	  glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT1);
     glEnable(GL_MULTISAMPLE);*/
-    // glEnable(GL_COLOR_MATERIAL);            //é¢œè‰²è¿½è¸ª
-  //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);         // çœŸæ­£ç²¾ç»†çš„é€è§†ä¿®æ­£
+    // glEnable(GL_COLOR_MATERIAL);            //ÑÕÉ«×·×Ù
+  //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);         // ÕæÕý¾«Ï¸µÄÍ¸ÊÓÐÞÕý
 
     //static GLfloat lightPosition[4] = { 9.0, 9.0, 7.0, 1.0 };
     //glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
     //GLfloat LightPosition[]= { 0.0f, 0.0f, 10.0f, 1.0f };
-   // GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };          // çŽ¯å¢ƒå…‰å‚æ•°
-   // GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };          // æ¼«å°„å…‰å‚æ•°
+   // GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };          // »·¾³¹â²ÎÊý
+   // GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };          // ÂþÉä¹â²ÎÊý
    // glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
     //glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
    // glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);
@@ -137,26 +137,26 @@ void GLWidget::paintGL()
 	gluLookAt(pos0x, pos0y, 100.0,
 		      pos0x, pos0y, 10.0,
 			  0.0, 1.0, 0.0);
-    glTranslatef(0.0, 0.0, 0.0);           //å¹³ç§»
-    glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);  //æ—‹è½¬
+    glTranslatef(0.0, 0.0, 0.0);           //Æ½ÒÆ
+    glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);  //Ðý×ª
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
-    glScalef(scaling,scaling,scaling);      //æ”¾å¤§ç¼©å°
+    glScalef(scaling,scaling,scaling);      //·Å´óËõÐ¡
     //glScalef(0.5,0.5,0.5);
     glColor3f(0.5f,0.5f,0.5f);
-    //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE   ); //ç”»çº¿æ¨¡å¼
+    //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE   ); //»­ÏßÄ£Ê½
 	/*
 	glBegin(GL_QUADS);
-	    glVertex3f(-20.0f, 20.0f, 0.0f); // å·¦ä¸Šé¡¶ç‚¹
-	    glVertex3f(20.0f, 20.0f, 0.0f); // å³ä¸Šé¡¶ç‚¹
-	    glVertex3f(20.0f, -20.0f, 0.0f); // å³ä¸‹é¡¶ç‚¹
-	    glVertex3f(-20.0f, -20.0f, 0.0f); // å·¦ä¸‹é¡¶ç‚¹
-	glEnd(); // å››è¾¹å½¢ç»˜åˆ¶ç»“æŸ
+	    glVertex3f(-20.0f, 20.0f, 0.0f); // ×óÉÏ¶¥µã
+	    glVertex3f(20.0f, 20.0f, 0.0f); // ÓÒÉÏ¶¥µã
+	    glVertex3f(20.0f, -20.0f, 0.0f); // ÓÒÏÂ¶¥µã
+	    glVertex3f(-20.0f, -20.0f, 0.0f); // ×óÏÂ¶¥µã
+	glEnd(); // ËÄ±ßÐÎ»æÖÆ½áÊø
 	glColor3f(1.0f, 0.0f, 0.0f);
 	glPointSize(8.0f);
 	glBegin(GL_POINTS);
 	glVertex3f(0.0f, 0.0f, 0.0f); 
-	glEnd(); // å››è¾¹å½¢ç»˜åˆ¶ç»“æŸ
+	glEnd(); // ËÄ±ßÐÎ»æÖÆ½áÊø
 	*/
 	
 
@@ -185,7 +185,7 @@ void GLWidget::resizeGL(int width, int height)
 
 
 
-    glOrtho(-10.00, +10.00, -10.00, +10.00, -100.01, 10.01);//è®¾ç½®æ˜¾ç¤ºä¸‰å›´è£åˆ‡ç©ºé—´
+    glOrtho(-10.00, +10.00, -10.00, +10.00, -100.01, 10.01);//ÉèÖÃÏÔÊ¾ÈýÎ§²ÃÇÐ¿Õ¼ä
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -195,7 +195,7 @@ int* GLWidget::NewMesh(QString fileName)
 {
 	int *size;
 	size = new int[2];
-    if(fileName.section(".",-1,-1)=="nrb"){     //åˆ¤æ–­æ›²çº¿NURBSæ–‡ä»¶nrb
+    if(fileName.section(".",-1,-1)=="nrb"){     //ÅÐ¶ÏÇúÏßNURBSÎÄ¼þnrb
        FileType = "nrb";
 	   FileOpen = new Bspline();
        if (!fileName.isEmpty())
@@ -209,7 +209,7 @@ int* GLWidget::NewMesh(QString fileName)
 	   size[1] = FileOpen->sizey();
 	   return size;*/
     }
-    if(fileName.section(".",-1,-1)=="ply"){       //åˆ¤æ–­ç½‘æ ¼meshæ–‡ä»¶ply
+    if(fileName.section(".",-1,-1)=="ply"){       //ÅÐ¶ÏÍø¸ñmeshÎÄ¼þply
         FileOpen = new LoadFileFOr();
         if (!fileName.isEmpty())
         {
@@ -220,7 +220,7 @@ int* GLWidget::NewMesh(QString fileName)
 		//size = new int [2];
 		//size[0] = FileOpen->sizex();
 		//size[1] = FileOpen->sizey();
-		//return size;   //è¿”å›žéœ€è¦å¡«å…¥UIçš„ä¿¡æ¯
+		//return size;   //·µ»ØÐèÒªÌîÈëUIµÄÐÅÏ¢
     } 
 
 	size[0] = FileOpen->sizex();

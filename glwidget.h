@@ -2,10 +2,10 @@
 #define GLWIDGET_H
 
 #include <QGLWidget>
-#include "bspline.h"
 #include <string>
+#include <windows.h> 
 
-//#include "bspline.h"
+#include "bspline.h"
 #include "loadfilefor.h"
 //#include <QOpenGLFunctions_4_3_Core>
 

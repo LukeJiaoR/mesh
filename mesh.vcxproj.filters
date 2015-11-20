@@ -80,9 +80,6 @@
     <ClCompile Include="LoadFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="basis.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bspline.h">
@@ -101,9 +98,6 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="LoadFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="basis.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
