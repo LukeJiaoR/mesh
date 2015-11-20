@@ -53,32 +53,30 @@ Bspline::Bspline(){
 
 //计算点
 
-//void Bspline::CurvePoint(const float u){  //得到outPoint
-//    float w = 0.0;
-//	vector<float> N;
-//    point out;
-//    out.init();
-//    int i;
-//	int span = FindSpan(0,knots-1, u,U);
-//	BasisFuns(span,u,degree,U,N);
-//    
-//	for (i = 0; i <= degree; i++)
-//    {
-//		cpoint *p;
-//		p = new cpoint;
-//		float c = ndu[i][degree];
-//		*p = Pw[span - degree + i] * c;
-//		out.x = out.x + p->x;   //ndu[i][degree] * Pi[span - degree + i].x * Pi[span - degree + i].w;
-//		out.y = out.y + p->y;   //ndu[i][degree] * Pi[span - degree + i].y * Pi[span - degree + i].w;
-//		out.z = out.z + p->z;   //ndu[i][degree] * Pi[span - degree + i].z * Pi[span - degree + i].w;
-//		w = w + p->w;           //ndu[i][degree] * Pi[span - degree + i].w;
-//    } 
-//	out = out / w;
-//  
-//
-//    outPoint.push_back(out);
-//   
-//}
+void Bspline::CurvePoint(const float u){  //得到 m_VFoutPoint
+    float w = 0.0;
+	vector<float> n;
+    point out;
+    out.init();
+    int i;
+	int span = findspan(0,knots-1, u,u);
+	basisfuns(span,u,degree,u,n);
+    
+	for (i = 0; i <= degree; i++)
+    {
+		cpoint *p;
+		p = new cpoint;
+		float c = ndu[i][degree];
+		*p = pw[span - degree + i] * c;
+		out.x = out.x + p->x;   //ndu[i][degree] * pi[span - degree + i].x * pi[span - degree + i].w;
+		out.y = out.y + p->y;   //ndu[i][degree] * pi[span - degree + i].y * pi[span - degree + i].w;
+		out.z = out.z + p->z;   //ndu[i][degree] * pi[span - degree + i].z * pi[span - degree + i].w;
+		w = w + p->w;           //ndu[i][degree] * pi[span - degree + i].w;
+    } 
+	out = out / w;
+	m_VFoutPoint.push_back(out);
+   
+}
 
 
 //void Bspline::RefineKnotVectCurve(int n, int p){
@@ -140,7 +138,7 @@ Bspline::Bspline(){
 
 
 void Bspline::output(){
-	outPoint.clear();
+	m_VFoutPoint.clear();
 	float iSpan, sub;
 	float u = 0.0;
 	for (int i = this->degree; i < this->knots - this->degree-1; i++)
@@ -208,7 +206,7 @@ void Bspline::Load(QString filename){
 	}
 	inf.close();
 
-	output();   // 计算outPoint
+	output();   // 计算 m_VFoutPoint
 
 }
 
@@ -255,28 +253,28 @@ void Bspline::Draw()
 		}
 	}
 	
-	if (outPoint.size()>0)
+	if ( m_VFoutPoint.size()>0)
 	{ 
 		glPointSize(8.0f);
 		glColor3f(1.0f, 0.0f, 0.0f);
 		glBegin(GL_POINTS);
-		glVertex3f(outPoint[0].x, outPoint[0].y, outPoint[0].z);
+		glVertex3f( m_VFoutPoint[0].x,  m_VFoutPoint[0].y,  m_VFoutPoint[0].z);
 		glEnd();
-		for (int i = 1; i < outPoint.size(); i++)
+		for (int i = 1; i <  m_VFoutPoint.size(); i++)
 		{
 			/*绘制NURBS曲线*/
 			if (!((i)%5))
 			{
 				glColor3f(1.0f, 0.0f, 0.0f);
 				glBegin(GL_POINTS);		
-					glVertex3f(outPoint[i].x, outPoint[i].y, outPoint[i].z);
+				glVertex3f(m_VFoutPoint[i].x, m_VFoutPoint[i].y, m_VFoutPoint[i].z);
 				glEnd();
 			}
 		
 			glColor3f(0.5f, 0.5f, 0.5f);
 			glBegin(GL_LINES);
-				glVertex3f(outPoint[i-1].x, outPoint[i-1].y, outPoint[i-1].z);
-				glVertex3f(outPoint[i].x, outPoint[i].y, outPoint[i].z);
+			glVertex3f(m_VFoutPoint[i - 1].x, m_VFoutPoint[i - 1].y, m_VFoutPoint[i - 1].z);
+				glVertex3f(m_VFoutPoint[i].x, m_VFoutPoint[i].y, m_VFoutPoint[i].z);
 			glEnd();
 		}
 	}

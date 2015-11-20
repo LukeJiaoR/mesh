@@ -77,9 +77,6 @@
     <ClCompile Include="Nurbs-DS.h">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="Nurbs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LoadFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -104,9 +101,6 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="LoadFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Nurbs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="basis.h">

@@ -156,7 +156,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="Nurbs-DS.h" />
-    <ClCompile Include="Nurbs.cpp" />
     <ClCompile Include="Release\moc_mainwindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -164,7 +163,6 @@
   <ItemGroup>
     <ClInclude Include="basis.h" />
     <ClInclude Include="bspline.h" />
-    <ClInclude Include="Nurbs.h" />
     <CustomBuild Include="glwidget.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
 if errorlevel 1 goto VCEnd

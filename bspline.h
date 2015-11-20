@@ -23,7 +23,7 @@ public:
 	void Draw() ;
 	int sizex(){ return controlp; }
 	int sizey(){ return knots; }
-	//void CurvePoint(const float u);
+	void CurvePoint(const float u);
 	void RefineKnotVectCurve(int n, int p);
 	void output();
 
@@ -37,7 +37,7 @@ private:
 
 	vector<point> Pi;				//控制点 x,y,z
     vector<float> U;				//节点矢量
-    vector<point> outPoint;         //NURBS最终绘制点
+    vector<point> m_VFoutPoint;         //NURBS最终绘制点
 	vector<point> CP;				//拟合点
 };
 
